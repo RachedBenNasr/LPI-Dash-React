@@ -1,8 +1,8 @@
-import React from 'react'
+import React from "react";
 
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 
-import './loyer.css'
+import "./loyer.css";
 
 const Loyer = (props) => {
   return (
@@ -25,19 +25,19 @@ const Loyer = (props) => {
         <span className="loyer-text6">{props.placeholder2}</span>
       </div>
     </div>
-  )
-}
+  );
+};
 
 Loyer.defaultProps = {
-  type1: 'annonces approuvées',
-  placeholder1: 'Approved table goes here',
-  placeholder: 'undecided table goes here',
-  rootClassName: '',
-  type2: 'annonces refusées',
-  placeholder2: 'Denied table goes here',
-  title: 'Proprietés a vendre',
-  type: 'nouvelles annonces',
-}
+  type1: "annonces approuvées",
+  placeholder1: "Approved table goes here",
+  placeholder: "undecided table goes here",
+  rootClassName: "",
+  type2: "annonces refusées",
+  placeholder2: "Denied table goes here",
+  title: "Proprietés a Louer",
+  type: "nouvelles annonces",
+};
 
 Loyer.propTypes = {
   type1: PropTypes.string,
@@ -48,6 +48,6 @@ Loyer.propTypes = {
   placeholder2: PropTypes.string,
   title: PropTypes.string,
   type: PropTypes.string,
-}
+};
 
-export default Loyer
+export default Loyer;
