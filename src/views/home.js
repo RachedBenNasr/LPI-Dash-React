@@ -1,10 +1,20 @@
-import React from 'react'
+import React, { useState } from "react";
 
-import { Helmet } from 'react-helmet'
+import { Helmet } from "react-helmet";
 
-import './home.css'
+import "./home.css";
 
 const Home = (props) => {
+  const [password, setPassword] = useState("");
+
+  const Check = () => {
+    const storedPassword = "TEST";
+
+    password === storedPassword
+      ? props.history.push("/data")
+      : alert("mot de passe incorrecte!");
+  };
+
   return (
     <div className="home-container">
       <Helmet>
@@ -21,19 +31,25 @@ const Home = (props) => {
           <span className="home-text1">saisissez votre mot de passe</span>
           <div className="home-container1">
             <input
-              type="text"
+              type="password"
               required="true"
               placeholder="Mot de passe"
               className="home-textinput input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
-            <button type="submit" className="home-button button">
+            <button
+              type="submit"
+              className="home-button button"
+              onClick={Check}
+            >
               Envoyer
             </button>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

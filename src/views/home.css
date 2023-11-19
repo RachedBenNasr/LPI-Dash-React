@@ -80,6 +80,7 @@
 .home-textinput {
   font-size: 0.75rem;
   border-color: var(--dl-color-gray-500);
+  width: 100%;
 }
 .home-button {
   color: var(--dl-color-gray-white);
@@ -87,6 +88,7 @@
   transition: 0.3s;
   margin-left: var(--dl-space-space-unit);
   background-color: var(--dl-color-gray-black);
+  cursor: pointer;
 }
 .home-button:hover {
   color: var(--dl-color-gray-black);
@@ -134,8 +136,5 @@
     align-items: center;
     flex-direction: column;
   }
-  .home-button {
-    margin-top: var(--dl-space-space-unit);
-    margin-left: 0px;
-  }
+  
 }
