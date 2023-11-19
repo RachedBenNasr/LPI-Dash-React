@@ -1,0 +1,86 @@
+.feedback-card-container {
+  width: 100%;
+  height: auto;
+  display: flex;
+  padding: var(--dl-space-space-unit);
+  position: relative;
+  box-shadow: 5px 5px 10px 0px #d4d4d4;
+  margin-top: var(--dl-space-space-unit);
+  align-items: center;
+  border-color: var(--dl-color-danger-300);
+  border-width: 1px;
+  border-radius: 15px;
+  margin-bottom: var(--dl-space-space-unit);
+  flex-direction: column;
+  justify-content: center;
+  background-color: #fef7f3;
+}
+.feedback-card-container1 {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.feedback-card-text {
+  color: var(--dl-color-gray-500);
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  margin-bottom: var(--dl-space-space-unit);
+  text-transform: uppercase;
+}
+.feedback-card-container2 {
+  display: flex;
+  opacity: 0.8;
+  align-items: flex-start;
+  margin-bottom: var(--dl-space-space-twounits);
+  flex-direction: row;
+}
+.feedback-card-text1 {
+  color: var(--dl-color-gray-500);
+  font-style: normal;
+  font-weight: 600;
+  margin-right: var(--dl-space-space-unit);
+  text-transform: uppercase;
+}
+.feedback-card-text2 {
+  color: var(--dl-color-gray-500);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  margin-right: var(--dl-space-space-unit);
+  text-transform: uppercase;
+}
+.feedback-card-text3 {
+  color: var(--dl-color-gray-500);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.feedback-card-text4 {
+  color: var(--dl-color-gray-500);
+  font-size: 17px;
+  font-style: normal;
+  text-align: left;
+  font-weight: 600;
+  margin-bottom: var(--dl-space-space-unit);
+}
+.feedback-card-container3 {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.feedback-card-icon {
+  fill: var(--dl-color-gray-500);
+  width: 17px;
+  height: auto;
+  margin-right: var(--dl-space-space-twounits);
+}
+.feedback-card-icon2 {
+  fill: var(--dl-color-success-300);
+  width: 17px;
+  height: auto;
+}

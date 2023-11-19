@@ -1,0 +1,114 @@
+.loyer-container {
+  width: 100%;
+  height: auto;
+  display: flex;
+  padding: var(--dl-space-space-twounits);
+  position: relative;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: #FAFAFA;
+}
+.loyer-text {
+  color: var(--dl-color-gray-500);
+  font-size: 30px;
+  align-self: center;
+  font-style: normal;
+  font-weight: 800;
+  margin-bottom: var(--dl-space-space-twounits);
+}
+.loyer-separator {
+  width: 100%;
+  height: 2px;
+  opacity: 0.8;
+  margin-bottom: var(--dl-space-space-twounits);
+  background-color: var(--dl-color-gray-500);
+}
+.loyer-new {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.loyer-text1 {
+  color: var(--dl-color-gray-500);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  margin-bottom: var(--dl-space-space-twounits);
+  text-transform: uppercase;
+}
+.loyer-separator1 {
+  width: 100%;
+  height: 2px;
+  opacity: 0.4;
+  margin-bottom: var(--dl-space-space-twounits);
+  background-color: var(--dl-color-gray-500);
+}
+.loyer-text2 {
+  color: var(--dl-color-gray-500);
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 600;
+  margin-bottom: var(--dl-space-space-twounits);
+}
+.loyer-approved {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.loyer-text3 {
+  color: var(--dl-color-gray-500);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  margin-bottom: var(--dl-space-space-twounits);
+  text-transform: uppercase;
+}
+.loyer-separator2 {
+  width: 100%;
+  height: 2px;
+  opacity: 0.4;
+  margin-bottom: var(--dl-space-space-twounits);
+  background-color: var(--dl-color-gray-500);
+}
+.loyer-text4 {
+  color: var(--dl-color-gray-500);
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 600;
+  margin-bottom: var(--dl-space-space-twounits);
+}
+.loyer-denied {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.loyer-text5 {
+  color: var(--dl-color-gray-500);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  margin-bottom: var(--dl-space-space-twounits);
+  text-transform: uppercase;
+}
+.loyer-separator3 {
+  width: 100%;
+  height: 2px;
+  opacity: 0.4;
+  margin-bottom: var(--dl-space-space-twounits);
+  background-color: var(--dl-color-gray-500);
+}
+.loyer-text6 {
+  color: var(--dl-color-gray-500);
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 600;
+  margin-bottom: var(--dl-space-space-twounits);
+}
+
