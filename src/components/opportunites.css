@@ -1,4 +1,4 @@
-.vente-container {
+.opportunites-container {
   width: 100%;
   height: auto;
   display: flex;
@@ -9,7 +9,7 @@
   justify-content: flex-start;
   background-color: #FAFAFA;
 }
-.vente-text {
+.opportunites-text {
   color: var(--dl-color-gray-500);
   font-size: 30px;
   align-self: center;
@@ -17,21 +17,21 @@
   font-weight: 800;
   margin-bottom: var(--dl-space-space-twounits);
 }
-.vente-separator {
+.opportunites-separator {
   width: 100%;
   height: 2px;
   opacity: 0.8;
   margin-bottom: var(--dl-space-space-twounits);
   background-color: var(--dl-color-gray-500);
 }
-.vente-new {
+.opportunites-new {
   width: 100%;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
   justify-content: flex-start;
 }
-.vente-text1 {
+.opportunites-text1 {
   color: var(--dl-color-gray-500);
   font-size: 20px;
   font-style: normal;
@@ -39,28 +39,28 @@
   margin-bottom: var(--dl-space-space-twounits);
   text-transform: uppercase;
 }
-.vente-separator1 {
+.opportunites-separator1 {
   width: 100%;
   height: 2px;
   opacity: 0.4;
   margin-bottom: var(--dl-space-space-twounits);
   background-color: var(--dl-color-gray-500);
 }
-.vente-text2 {
+.opportunites-text2 {
   color: var(--dl-color-gray-500);
   font-size: 30px;
   font-style: normal;
   font-weight: 600;
   margin-bottom: var(--dl-space-space-twounits);
 }
-.vente-approved {
+.opportunites-approved {
   width: 100%;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
   justify-content: flex-start;
 }
-.vente-text3 {
+.opportunites-text3 {
   color: var(--dl-color-gray-500);
   font-size: 20px;
   font-style: normal;
@@ -68,28 +68,28 @@
   margin-bottom: var(--dl-space-space-twounits);
   text-transform: uppercase;
 }
-.vente-separator2 {
+.opportunites-separator2 {
   width: 100%;
   height: 2px;
   opacity: 0.4;
   margin-bottom: var(--dl-space-space-twounits);
   background-color: var(--dl-color-gray-500);
 }
-.vente-text4 {
+.opportunites-text4 {
   color: var(--dl-color-gray-500);
   font-size: 30px;
   font-style: normal;
   font-weight: 600;
   margin-bottom: var(--dl-space-space-twounits);
 }
-.vente-denied {
+.opportunites-denied {
   width: 100%;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
   justify-content: flex-start;
 }
-.vente-text5 {
+.opportunites-text5 {
   color: var(--dl-color-gray-500);
   font-size: 20px;
   font-style: normal;
@@ -97,14 +97,14 @@
   margin-bottom: var(--dl-space-space-twounits);
   text-transform: uppercase;
 }
-.vente-separator3 {
+.opportunites-separator3 {
   width: 100%;
   height: 2px;
   opacity: 0.4;
   margin-bottom: var(--dl-space-space-twounits);
   background-color: var(--dl-color-gray-500);
 }
-.vente-text6 {
+.opportunites-text6 {
   color: var(--dl-color-gray-500);
   font-size: 30px;
   font-style: normal;

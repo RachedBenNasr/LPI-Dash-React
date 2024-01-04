@@ -64,7 +64,7 @@ const Data = (props) => {
           }`}
           onClick={() => handleMenuItemClick("opportunites")}
         >
-          <span className="data-text5 not-selected">Opportunités</span>
+          <span className="data-text5 not-selected">Commercial</span>
           <svg viewBox="0 0 877.7142857142857 1024" className="data-icon4">
             <path d="M877.714 512c0 242.286-196.571 438.857-438.857 438.857s-438.857-196.571-438.857-438.857 196.571-438.857 438.857-438.857 438.857 196.571 438.857 438.857z"></path>
           </svg>
