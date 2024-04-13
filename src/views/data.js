@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Route, Switch } from "react-router-dom";
 
 import Resume from "../components/resume";
@@ -7,12 +7,18 @@ import Loyer from "../components/loyer";
 import Opportunite from "../components/opportunites";
 import Feedback from "../components/feedback";
 
-import { DateTimePrimitive } from "@teleporthq/react-components";
 import { Helmet } from "react-helmet";
 
 import "./data.css";
 
-const Data = (props) => {
+const Data = () => {
+  const currentDate = new Date().toLocaleDateString("fr-FR", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   const [selectedMenuItem, setSelectedMenuItem] = useState("");
 
   const handleMenuItemClick = (menuItem) => {
@@ -88,10 +94,7 @@ const Data = (props) => {
       <div className="data-right">
         <header data-role="Header" className="data-header">
           <span>
-            <DateTimePrimitive
-              format="DD/MM/YYYY"
-              date="Wed Sep 20 2023 15:54:25 GMT+0100 (Central European Standard Time)"
-            ></DateTimePrimitive>
+            <b>{currentDate}</b>
           </span>
           <span className="data-text7">Tableau de bord</span>
           <a

@@ -4,6 +4,7 @@ import "./resume.css";
 import { getDatabase, ref, get } from "firebase/database";
 
 const Resume = () => {
+  //FETCHING LISTINGS
   const [approvedRentListings, setApprovedRentListings] = useState(0);
   const [requestedRentListings, setRequestedRentListings] = useState(0);
   const [refusedRentListings, setRefusedRentListings] = useState(0);
@@ -125,6 +126,66 @@ const Resume = () => {
 
     fetchTotalListings();
   }, []);
+  //FETCHING CONTACT REQUESTS
+  const [totalContactRequests, setTotalContactRequests] = useState(0);
+  const [respondedContactRequests, setRespondedContactRequests] = useState(0);
+  const [unrespondedContactRequests, setUnrespondedContactRequests] =
+    useState(0);
+  const [totalQuoteRequests, setTotalQuoteRequests] = useState(0);
+  const [respondedQuoteRequests, setRespondedQuoteRequests] = useState(0);
+  const [unrespondedQuoteRequests, setUnrespondedQuoteRequests] = useState(0);
+
+  useEffect(() => {
+    const fetchContactRequests = async () => {
+      const database = getDatabase();
+      const contactRequestsRef = ref(database, "requests/contactRequests");
+      const quoteRequestsRef = ref(database, "requests/quoteRequests");
+
+      try {
+        const [contactSnapshot, quoteSnapshot] = await Promise.all([
+          get(contactRequestsRef),
+          get(quoteRequestsRef),
+        ]);
+
+        const contactData = contactSnapshot.val();
+        const quoteData = quoteSnapshot.val();
+
+        let totalContact = 0;
+        let respondedContact = 0;
+        let totalQuote = 0;
+        let respondedQuote = 0;
+
+        if (contactData) {
+          Object.values(contactData).forEach((request) => {
+            totalContact++;
+            if (request.state === "seen") {
+              respondedContact++;
+            }
+          });
+        }
+
+        if (quoteData) {
+          Object.values(quoteData).forEach((request) => {
+            totalQuote++;
+            if (request.state === "seen") {
+              respondedQuote++;
+            }
+          });
+        }
+
+        setTotalContactRequests(totalContact);
+        setRespondedContactRequests(respondedContact);
+        setUnrespondedContactRequests(totalContact - respondedContact);
+        setTotalQuoteRequests(totalQuote);
+        setRespondedQuoteRequests(respondedQuote);
+        setUnrespondedQuoteRequests(totalQuote - respondedQuote);
+      } catch (error) {
+        console.error("Error fetching contact requests:", error);
+      }
+    };
+
+    fetchContactRequests();
+  }, []);
 
   return (
     <div className="resume-container">
@@ -182,16 +243,28 @@ const Resume = () => {
       <div className="resume-contents1">
         <div className="resume-table-2">
           <div className="resume-th">
-            <span className="resume-text">Demandes de contact</span>
+            <span className="resume-text">Messages</span>
             <span className="resume-text">Répondus</span>
             <span className="resume-text">en attente</span>
             <span className="resume-text">Total</span>
           </div>
           <div className="resume-td">
-            <span className="resume-text-black">X</span>
-            <span className="resume-text-black">X</span>
-            <span className="resume-text-black">X</span>
-            <span className="resume-text-black">X</span>
+            <span className="resume-text-black">Demande de devis</span>
+            <span className="resume-text-black">{respondedQuoteRequests}</span>
+            <span className="resume-text-black">
+              {unrespondedQuoteRequests}
+            </span>
+            <span className="resume-text-black">{totalQuoteRequests}</span>
+          </div>
+          <div className="resume-td">
+            <span className="resume-text-black">Demande de contact</span>
+            <span className="resume-text-black">
+              {respondedContactRequests}
+            </span>
+            <span className="resume-text-black">
+              {unrespondedContactRequests}
+            </span>
+            <span className="resume-text-black">{totalContactRequests}</span>
           </div>
         </div>
       </div>
