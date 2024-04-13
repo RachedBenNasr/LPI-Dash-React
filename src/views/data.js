@@ -22,7 +22,7 @@ const Data = (props) => {
   return (
     <div className="data-container">
       <Helmet>
-        <title>Data - LPI-Dash</title>
+        <title>Tableau de bord</title>
         <meta property="og:title" content="Data - LPI-Dash" />
       </Helmet>
       <div className="data-left">
