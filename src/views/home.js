@@ -1,18 +1,49 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 
+import { getDatabase, ref, get } from "firebase/database";
 import "./home.css";
 
 const Home = (props) => {
   const [password, setPassword] = useState("");
+  const [storedPasswordHash, setStoredPasswordHash] = useState("");
+
+  useEffect(() => {
+    // Fetch the hashed password from Firebase
+    const fetchPasswordHash = async () => {
+      try {
+        const database = getDatabase();
+        const passwordRef = ref(database, "secrets/hashes");
+        const snapshot = await get(passwordRef);
+        if (snapshot.exists()) {
+          const hash = snapshot.val();
+          setStoredPasswordHash(hash);
+        } else {
+          console.error("Password hash not found in Firebase");
+        }
+      } catch (error) {
+        console.error("Error fetching password hash:", error);
+      }
+    };
+    fetchPasswordHash();
+  }, []);
 
   const Check = () => {
-    const storedPassword = "TEST";
+    // Hash the input password using SHA-256
+    const hashedInputPassword = hashFunction(password);
 
-    password === storedPassword
-      ? props.history.push("/data")
-      : alert("mot de passe incorrecte!");
+    // Compare hashed input with hashed stored password
+    if (hashedInputPassword === storedPasswordHash) {
+      props.history.push("/data");
+    } else {
+      alert("Mot de passe incorrect !");
+    }
+  };
+
+  const hashFunction = (password) => {
+    // Implement SHA-256 hashing function
+    const sha256 = require("crypto-js/sha256");
+    return sha256(password).toString();
   };
 
   return (
@@ -28,18 +59,18 @@ const Home = (props) => {
       </header>
       <div className="home-hero">
         <div className="home-banner">
-          <span className="home-text1">saisissez votre mot de passe</span>
+          <span className="home-text1">Saisissez votre mot de passe</span>
           <div className="home-container1">
             <input
               type="password"
-              required="true"
+              required={true}
               placeholder="Mot de passe"
               className="home-textinput input"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
             <button
-              type="submit"
+              type="button"
               className="home-button button"
               onClick={Check}
             >
