@@ -1,72 +1,71 @@
 .feedback-container {
+  margin-top: 20px;
   width: 100%;
-  height: 400px;
-  display: flex;
-  position: relative;
-  align-items: flex-start;
-  flex-direction: column;
-  justify-content: flex-start;
 }
-.feedback-container1 {
-  width: 100%;
-  height: auto;
-  display: flex;
-  padding: var(--dl-space-space-twounits);
-  position: relative;
-  align-self: center;
-  align-items: flex-start;
-  flex-direction: column;
-  justify-content: flex-start;
-  background-color: #FAFAFA;
+
+.feedback-header {
+  margin-bottom: 10px;
 }
+
 .feedback-text {
-  color: var(--dl-color-gray-500);
-  font-size: 30px;
-  font-style: normal;
-  font-weight: 600;
-  margin-bottom: var(--dl-space-space-twounits);
+  font-weight: bold;
+  font-size: 18px;
 }
-.feedback-separator {
+
+.feedback-section {
+  margin-bottom: 20px;
+}
+
+.feedback-section-header {
+  margin-bottom: 10px;
+}
+
+.feedback-section-title {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.contact-requests {
+  margin-top: 10px;
+}
+
+.contact-table {
   width: 100%;
-  height: 2px;
-  opacity: 0.8;
-  margin-bottom: var(--dl-space-space-twounits);
-  background-color: var(--dl-color-gray-500);
+  border-collapse: collapse;
 }
-.feedback-approved {
-  width: 100%;
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  justify-content: flex-start;
+
+.contact-table th,
+.contact-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
 }
-.feedback-text1 {
-  color: var(--dl-color-gray-500);
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 600;
-  margin-bottom: var(--dl-space-space-twounits);
-  text-transform: uppercase;
+
+.contact-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
 }
-.feedback-separator1 {
-  width: 100%;
-  height: 2px;
-  opacity: 0.4;
-  margin-bottom: var(--dl-space-space-twounits);
-  background-color: var(--dl-color-gray-500);
+
+.contact-table td {
+  text-align: left;
 }
-.feedback-denied {
-  width: 100%;
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  justify-content: flex-start;
+
+.contact-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
-.feedback-text2 {
-  color: var(--dl-color-gray-500);
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 600;
-  margin-bottom: var(--dl-space-space-twounits);
-  text-transform: uppercase;
+
+.contact-table tbody tr:hover {
+  background-color: #f2f2f2;
+}
+
+.action-btn {
+  background-color: #A22020;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.action-btn:hover {
+  background-color: #891b1b;
 }

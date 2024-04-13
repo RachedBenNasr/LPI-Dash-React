@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, Route, Switch } from "react-router-dom";
+import { getDatabase, ref, get } from "firebase/database";
 
 import Resume from "../components/resume";
 import Vente from "../components/vente";
@@ -24,6 +25,65 @@ const Data = () => {
   const handleMenuItemClick = (menuItem) => {
     setSelectedMenuItem(menuItem);
   };
+
+  const [unseenRequests, setUnseenRequests] = useState(0);
+
+  useEffect(() => {
+    const fetchNumberOfRequests = async () => {
+      const database = getDatabase();
+      const contactRequestsRef = ref(database, "requests/contactRequests");
+      const quoteRequestsRef = ref(database, "requests/quoteRequests");
+
+      let totalUnseenContactRequests = 0;
+      let totalUnseenQuoteRequests = 0;
+
+      try {
+        const contactSnapshot = await get(contactRequestsRef);
+        const contactData = contactSnapshot.val();
+
+        if (contactData) {
+          const requestsArray = Object.values(contactData);
+          totalUnseenContactRequests = requestsArray.reduce(
+            (count, request) => {
+              if (request.state === "unseen") {
+                return count + 1;
+              }
+              return count;
+            },
+            0
+          );
+        }
+
+        const quoteSnapshot = await get(quoteRequestsRef);
+        const quoteData = quoteSnapshot.val();
+
+        if (quoteData) {
+          const requestsArray = Object.values(quoteData);
+          totalUnseenQuoteRequests = requestsArray.reduce((count, request) => {
+            if (request.state === "unseen") {
+              return count + 1;
+            }
+            return count;
+          }, 0);
+        }
+      } catch (error) {
+        console.error("Error fetching requests:", error);
+      }
+
+      const totalUnseenRequests =
+        totalUnseenContactRequests + totalUnseenQuoteRequests;
+      setUnseenRequests(totalUnseenRequests);
+      console.log(totalUnseenRequests);
+    };
+
+    fetchNumberOfRequests();
+
+    //Fetch every 2 mins
+    const intervalId = setInterval(fetchNumberOfRequests, 60 * 1000);
+
+    // Clear interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <div className="data-container">
@@ -81,10 +141,14 @@ const Data = () => {
           }`}
           onClick={() => handleMenuItemClick("feedback")}
         >
-          <span className="data-text6 ">Demandes de contact</span>
-          <svg viewBox="0 0 877.7142857142857 1024" className="data-icon6">
-            <path d="M877.714 512c0 242.286-196.571 438.857-438.857 438.857s-438.857-196.571-438.857-438.857 196.571-438.857 438.857-438.857 438.857 196.571 438.857 438.857z"></path>
-          </svg>
+          <span className="data-text6">Demandes de contact</span>
+          {unseenRequests != 0 && (
+            <>
+              <svg viewBox="0 0 877.7142857142857 1024" className="data-icon6">
+                <path d="M877.714 512c0 242.286-196.571 438.857-438.857 438.857s-438.857-196.571-438.857-438.857 196.571-438.857 438.857-438.857 438.857 196.571 438.857 438.857z"></path>
+              </svg>
+            </>
+          )}
         </div>
         <div className="data-separator1"></div>
         <Link to="/" className="data-navlink">
@@ -113,7 +177,7 @@ const Data = () => {
             <Route path="/data/loyer" component={Loyer} />
             <Route path="/data/opportunites" component={Opportunite} />
             <Route path="/data/feedback" component={Feedback} />
-            {/* Default route, loads the appropriate component based on the selectedMenuItem */}
+
             <Route
               path="/data"
               render={() => {
