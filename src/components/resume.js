@@ -4,9 +4,17 @@ import "./resume.css";
 import { getDatabase, ref, get } from "firebase/database";
 
 const Resume = () => {
-  const [rentListings, setRentListings] = useState(0);
-  const [saleListings, setSaleListings] = useState(0);
-  const [commercialListings, setCommercialListings] = useState(0);
+  const [approvedRentListings, setApprovedRentListings] = useState(0);
+  const [requestedRentListings, setRequestedRentListings] = useState(0);
+  const [refusedRentListings, setRefusedRentListings] = useState(0);
+  const [approvedSaleListings, setApprovedSaleListings] = useState(0);
+  const [requestedSaleListings, setRequestedSaleListings] = useState(0);
+  const [refusedSaleListings, setRefusedSaleListings] = useState(0);
+  const [approvedCommercialListings, setApprovedCommercialListings] =
+    useState(0);
+  const [requestedCommercialListings, setRequestedCommercialListings] =
+    useState(0);
+  const [refusedCommercialListings, setRefusedCommercialListings] = useState(0);
 
   useEffect(() => {
     const fetchTotalListings = async () => {
@@ -23,16 +31,46 @@ const Resume = () => {
         const saleData = saleSnapshot.val();
         const rentData = rentSnapshot.val();
 
-        let saleCount = 0;
-        let rentCount = 0;
-        let commercialCount = 0;
+        let approvedRentCount = 0;
+        let requestedRentCount = 0;
+        let refusedRentCount = 0;
+        let approvedSaleCount = 0;
+        let requestedSaleCount = 0;
+        let refusedSaleCount = 0;
+        let approvedCommercialCount = 0;
+        let requestedCommercialCount = 0;
+        let refusedCommercialCount = 0;
 
         if (saleData) {
           Object.values(saleData).forEach((listing) => {
             if (listing.nature === "commercial") {
-              commercialCount++;
+              switch (listing.state) {
+                case "approved":
+                  approvedCommercialCount++;
+                  break;
+                case "requested":
+                  requestedCommercialCount++;
+                  break;
+                case "refused":
+                  refusedCommercialCount++;
+                  break;
+                default:
+                  break;
+              }
             } else {
-              saleCount++;
+              switch (listing.state) {
+                case "approved":
+                  approvedSaleCount++;
+                  break;
+                case "requested":
+                  requestedSaleCount++;
+                  break;
+                case "refused":
+                  refusedSaleCount++;
+                  break;
+                default:
+                  break;
+              }
             }
           });
         }
@@ -40,16 +78,46 @@ const Resume = () => {
         if (rentData) {
           Object.values(rentData).forEach((listing) => {
             if (listing.nature === "commercial") {
-              commercialCount++;
+              switch (listing.state) {
+                case "approved":
+                  approvedCommercialCount++;
+                  break;
+                case "requested":
+                  requestedCommercialCount++;
+                  break;
+                case "refused":
+                  refusedCommercialCount++;
+                  break;
+                default:
+                  break;
+              }
             } else {
-              rentCount++;
+              switch (listing.state) {
+                case "approved":
+                  approvedRentCount++;
+                  break;
+                case "requested":
+                  requestedRentCount++;
+                  break;
+                case "refused":
+                  refusedRentCount++;
+                  break;
+                default:
+                  break;
+              }
             }
           });
         }
 
-        setSaleListings(saleCount);
-        setRentListings(rentCount);
-        setCommercialListings(commercialCount);
+        setApprovedRentListings(approvedRentCount);
+        setRequestedRentListings(requestedRentCount);
+        setRefusedRentListings(refusedRentCount);
+        setApprovedSaleListings(approvedSaleCount);
+        setRequestedSaleListings(requestedSaleCount);
+        setRefusedSaleListings(refusedSaleCount);
+        setApprovedCommercialListings(approvedCommercialCount);
+        setRequestedCommercialListings(requestedCommercialCount);
+        setRefusedCommercialListings(refusedCommercialCount);
       } catch (error) {
         console.error("Error fetching listings:", error);
       }
@@ -71,27 +139,46 @@ const Resume = () => {
           </div>
           <div className="resume-td">
             <span className="resume-text-black">Vente</span>
-            <span className="resume-text-black">X</span>
-            <span className="resume-text-black">X</span>
-            <span className="resume-text-black">X</span>
-            <span className="resume-text-black">{saleListings}</span>
+            <span className="resume-text-black">{requestedSaleListings}</span>
+            <span className="resume-text-black">{approvedSaleListings}</span>
+            <span className="resume-text-black">{refusedSaleListings}</span>
+            <span className="resume-text-black">
+              {requestedSaleListings +
+                approvedSaleListings +
+                refusedSaleListings}
+            </span>
           </div>
           <div className="resume-td">
             <span className="resume-text-black">Loyer</span>
-            <span className="resume-text-black">X</span>
-            <span className="resume-text-black">X</span>
-            <span className="resume-text-black">X</span>
-            <span className="resume-text-black">{rentListings}</span>
+            <span className="resume-text-black">{requestedRentListings}</span>
+            <span className="resume-text-black">{approvedRentListings}</span>
+            <span className="resume-text-black">{refusedRentListings}</span>
+            <span className="resume-text-black">
+              {requestedRentListings +
+                approvedRentListings +
+                refusedRentListings}
+            </span>
           </div>
           <div className="resume-td">
             <span className="resume-text-black">Commercial</span>
-            <span className="resume-text-black">X</span>
-            <span className="resume-text-black">X</span>
-            <span className="resume-text-black">X</span>
-            <span className="resume-text-black">{commercialListings}</span>
+            <span className="resume-text-black">
+              {requestedCommercialListings}
+            </span>
+            <span className="resume-text-black">
+              {approvedCommercialListings}
+            </span>
+            <span className="resume-text-black">
+              {refusedCommercialListings}
+            </span>
+            <span className="resume-text-black">
+              {requestedCommercialListings +
+                approvedCommercialListings +
+                refusedCommercialListings}
+            </span>
           </div>
         </div>
       </div>
+
       <div className="resume-contents1">
         <div className="resume-table-2">
           <div className="resume-th">
