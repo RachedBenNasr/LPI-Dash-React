@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./feedback.css";
 import { getDatabase, ref, get, update, remove } from "firebase/database";
+import QuoteRequests from "./quoteTable";
 
 const Feedback = () => {
   const [unseenContactRequests, setUnseenContactRequests] = useState([]);
@@ -35,7 +36,7 @@ const Feedback = () => {
     fetchContactRequests();
   }, []);
 
-  const markAsSeen = async (requestId) => {
+  const markContactAsSeen = async (requestId) => {
     const database = getDatabase();
     const contactRequestsRef = ref(
       database,
@@ -141,7 +142,7 @@ const Feedback = () => {
                   <td>
                     <button
                       className="action-btn"
-                      onClick={() => markAsSeen(request.requestid)}
+                      onClick={() => markContactAsSeen(request.requestid)}
                     >
                       Marquer comme lu
                     </button>
@@ -201,6 +202,10 @@ const Feedback = () => {
             </tbody>
           </table>
         </div>
+      </div>
+      <div className="feedback-header">
+        <span className="feedback-text">Demandes de devis</span>
+        <QuoteRequests></QuoteRequests>
       </div>
     </div>
   );
