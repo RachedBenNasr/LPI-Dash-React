@@ -3,8 +3,12 @@ import "./feedback.css";
 import { getDatabase, ref, get, update, remove } from "firebase/database";
 
 const Feedback = () => {
+  /*CONTACT REQUESTS*/
   const [unseenContactRequests, setUnseenContactRequests] = useState([]);
   const [seenContactRequests, setSeenContactRequests] = useState([]);
+  /*QUOTE REQUESTS*/
+  const [unseenQuoteRequests, setUnseenQuoteRequests] = useState([]);
+  const [seenQuoteRequests, setSeenQuoteRequests] = useState([]);
 
   useEffect(() => {
     const fetchContactRequests = async () => {
@@ -33,6 +37,33 @@ const Feedback = () => {
     };
 
     fetchContactRequests();
+
+    const fetchQuoteRequests = async () => {
+      const database = getDatabase();
+      const quoteRequestsRef = ref(database, "requests/quoteRequests");
+
+      try {
+        const quoteSnapshot = await get(quoteRequestsRef);
+        const quoteData = quoteSnapshot.val();
+
+        if (quoteData) {
+          const requestsArray = Object.values(quoteData);
+          const unseenRequests = requestsArray.filter(
+            (request) => request.state === "unseen"
+          );
+          const seenRequests = requestsArray.filter(
+            (request) => request.state === "seen"
+          );
+
+          setUnseenQuoteRequests(unseenRequests);
+          setSeenQuoteRequests(seenRequests);
+        }
+      } catch (error) {
+        console.error("Error fetching quote requests:", error);
+      }
+    };
+
+    fetchQuoteRequests();
   }, []);
 
   const markContactAsSeen = async (requestId) => {
@@ -117,36 +148,28 @@ const Feedback = () => {
             <table className="contact-table">
               <thead>
                 <tr>
-                  <th>Nom</th>
                   <th>Email</th>
-                  <th>Téléphone</th>
-                  <th>Message</th>
+                  <th>Listing ID</th>
                   <th>Date et heure</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {unseenContactRequests.map((request) => (
+                {unseenQuoteRequests.map((request) => (
                   <tr key={request.requestid}>
-                    <td>{request.name}</td>
                     <td>
                       <a href={`mailto:${request.email}`}>{request.email}</a>
                     </td>
-                    <td>
-                      <a href={`tel:${request.phone}`}>{request.phone}</a>
-                    </td>
-
-                    <td>{request.body}</td>
+                    <td>{request.listingID}</td>
                     <td>
                       {new Date(request.dateTime).toLocaleString("fr-FR")}
                     </td>
-
                     <td>
                       <button
                         className="action-btn"
                         onClick={() => markContactAsSeen(request.requestid)}
                       >
-                        Marquer comme lu
+                        Marquer comme vu
                       </button>
                       <button
                         className="action-btn"
