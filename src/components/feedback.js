@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./feedback.css";
 import { getDatabase, ref, get, update, remove } from "firebase/database";
-import QuoteRequests from "./quoteTable";
 
 const Feedback = () => {
   const [unseenContactRequests, setUnseenContactRequests] = useState([]);
@@ -106,106 +105,212 @@ const Feedback = () => {
 
   return (
     <div className="feedback-container">
-      <div className="feedback-header">
-        <span className="feedback-text">Demandes de contact</span>
-      </div>
-      <div className="feedback-section">
-        <div className="feedback-section-header">
-          <span className="feedback-section-title">Messages non lus</span>
+      <div className="section">
+        <div className="feedback-header">
+          <span className="feedback-text">Demandes de Devis</span>
         </div>
-        <div className="contact-requests">
-          <table className="contact-table">
-            <thead>
-              <tr>
-                <th>Nom</th>
-                <th>Email</th>
-                <th>Téléphone</th>
-                <th>Message</th>
-                <th>Date et heure</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {unseenContactRequests.map((request) => (
-                <tr key={request.requestid}>
-                  <td>{request.name}</td>
-                  <td>
-                    <a href={`mailto:${request.email}`}>{request.email}</a>
-                  </td>
-                  <td>
-                    <a href={`tel:${request.phone}`}>{request.phone}</a>
-                  </td>
-
-                  <td>{request.body}</td>
-                  <td>{new Date(request.dateTime).toLocaleString("fr-FR")}</td>
-
-                  <td>
-                    <button
-                      className="action-btn"
-                      onClick={() => markContactAsSeen(request.requestid)}
-                    >
-                      Marquer comme lu
-                    </button>
-                    <button
-                      className="action-btn"
-                      onClick={() => deleteMessage(request.requestid)}
-                    >
-                      Supprimer
-                    </button>
-                  </td>
+        <div className="feedback-section">
+          <div className="feedback-section-header">
+            <span className="feedback-section-title">Messages non lus</span>
+          </div>
+          <div className="contact-requests">
+            <table className="contact-table">
+              <thead>
+                <tr>
+                  <th>Nom</th>
+                  <th>Email</th>
+                  <th>Téléphone</th>
+                  <th>Message</th>
+                  <th>Date et heure</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div className="feedback-section">
-        <div className="feedback-section-header">
-          <span className="feedback-section-title">Messages déjà lus</span>
-        </div>
-        <div className="contact-requests">
-          <table className="contact-table">
-            <thead>
-              <tr>
-                <th>Nom</th>
-                <th>Email</th>
-                <th>Téléphone</th>
-                <th>Message</th>
-                <th>Date et heure</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {seenContactRequests.map((request) => (
-                <tr key={request.requestid}>
-                  <td>{request.name}</td>
-                  <td>
-                    <a href={`mailto:${request.email}`}>{request.email}</a>
-                  </td>
-                  <td>
-                    <a href={`tel:${request.phone}`}>{request.phone}</a>
-                  </td>
+              </thead>
+              <tbody>
+                {unseenContactRequests.map((request) => (
+                  <tr key={request.requestid}>
+                    <td>{request.name}</td>
+                    <td>
+                      <a href={`mailto:${request.email}`}>{request.email}</a>
+                    </td>
+                    <td>
+                      <a href={`tel:${request.phone}`}>{request.phone}</a>
+                    </td>
 
-                  <td>{request.body}</td>
-                  <td>{new Date(request.dateTime).toLocaleString("fr-FR")}</td>
+                    <td>{request.body}</td>
+                    <td>
+                      {new Date(request.dateTime).toLocaleString("fr-FR")}
+                    </td>
 
-                  <td>
-                    <button
-                      className="action-btn"
-                      onClick={() => deleteMessage(request.requestid)}
-                    >
-                      Supprimer
-                    </button>
-                  </td>
+                    <td>
+                      <button
+                        className="action-btn"
+                        onClick={() => markContactAsSeen(request.requestid)}
+                      >
+                        Marquer comme lu
+                      </button>
+                      <button
+                        className="action-btn"
+                        onClick={() => deleteMessage(request.requestid)}
+                      >
+                        Supprimer
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div className="feedback-section">
+          <div className="feedback-section-header">
+            <span className="feedback-section-title">Messages déjà lus</span>
+          </div>
+          <div className="contact-requests">
+            <table className="contact-table">
+              <thead>
+                <tr>
+                  <th>Nom</th>
+                  <th>Email</th>
+                  <th>Téléphone</th>
+                  <th>Message</th>
+                  <th>Date et heure</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {seenContactRequests.map((request) => (
+                  <tr key={request.requestid}>
+                    <td>{request.name}</td>
+                    <td>
+                      <a href={`mailto:${request.email}`}>{request.email}</a>
+                    </td>
+                    <td>
+                      <a href={`tel:${request.phone}`}>{request.phone}</a>
+                    </td>
+
+                    <td>{request.body}</td>
+                    <td>
+                      {new Date(request.dateTime).toLocaleString("fr-FR")}
+                    </td>
+
+                    <td>
+                      <button
+                        className="action-btn"
+                        onClick={() => deleteMessage(request.requestid)}
+                      >
+                        Supprimer
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-      <div className="feedback-header">
-        <span className="feedback-text">Demandes de devis</span>
-        <QuoteRequests></QuoteRequests>
+      <div className="separator"></div>
+      <div className="section">
+        <div className="feedback-header">
+          <span className="feedback-text">Demandes de contact</span>
+        </div>
+        <div className="feedback-section">
+          <div className="feedback-section-header">
+            <span className="feedback-section-title">Messages non lus</span>
+          </div>
+          <div className="contact-requests">
+            <table className="contact-table">
+              <thead>
+                <tr>
+                  <th>Nom</th>
+                  <th>Email</th>
+                  <th>Téléphone</th>
+                  <th>Message</th>
+                  <th>Date et heure</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {unseenContactRequests.map((request) => (
+                  <tr key={request.requestid}>
+                    <td>{request.name}</td>
+                    <td>
+                      <a href={`mailto:${request.email}`}>{request.email}</a>
+                    </td>
+                    <td>
+                      <a href={`tel:${request.phone}`}>{request.phone}</a>
+                    </td>
+
+                    <td>{request.body}</td>
+                    <td>
+                      {new Date(request.dateTime).toLocaleString("fr-FR")}
+                    </td>
+
+                    <td>
+                      <button
+                        className="action-btn"
+                        onClick={() => markContactAsSeen(request.requestid)}
+                      >
+                        Marquer comme lu
+                      </button>
+                      <button
+                        className="action-btn"
+                        onClick={() => deleteMessage(request.requestid)}
+                      >
+                        Supprimer
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div className="feedback-section">
+          <div className="feedback-section-header">
+            <span className="feedback-section-title">Messages déjà lus</span>
+          </div>
+          <div className="contact-requests">
+            <table className="contact-table">
+              <thead>
+                <tr>
+                  <th>Nom</th>
+                  <th>Email</th>
+                  <th>Téléphone</th>
+                  <th>Message</th>
+                  <th>Date et heure</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {seenContactRequests.map((request) => (
+                  <tr key={request.requestid}>
+                    <td>{request.name}</td>
+                    <td>
+                      <a href={`mailto:${request.email}`}>{request.email}</a>
+                    </td>
+                    <td>
+                      <a href={`tel:${request.phone}`}>{request.phone}</a>
+                    </td>
+
+                    <td>{request.body}</td>
+                    <td>
+                      {new Date(request.dateTime).toLocaleString("fr-FR")}
+                    </td>
+
+                    <td>
+                      <button
+                        className="action-btn"
+                        onClick={() => deleteMessage(request.requestid)}
+                      >
+                        Supprimer
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   );

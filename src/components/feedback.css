@@ -15,6 +15,12 @@
 .feedback-section {
   margin-bottom: 20px;
 }
+.separator {
+  width: 70%;
+  height: 2px;
+  margin: 40px;
+  background-color: var(--dl-color-gray-500);
+}
 
 .feedback-section-header {
   margin-bottom: 10px;
