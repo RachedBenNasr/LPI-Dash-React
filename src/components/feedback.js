@@ -3,12 +3,28 @@ import "./feedback.css";
 import { getDatabase, ref, get, update, remove } from "firebase/database";
 
 const Feedback = () => {
-  /*CONTACT REQUESTS*/
   const [unseenContactRequests, setUnseenContactRequests] = useState([]);
   const [seenContactRequests, setSeenContactRequests] = useState([]);
-  /*QUOTE REQUESTS*/
   const [unseenQuoteRequests, setUnseenQuoteRequests] = useState([]);
   const [seenQuoteRequests, setSeenQuoteRequests] = useState([]);
+
+  function sendEmail() {
+    var email = "ezezz@zez.cc";
+    var subject = "demande de devis - Le Point Immobilier Tunisie";
+    var body =
+      "Bonjour,\n\nNous voulons vous remercier pour votre confiance et pour nous avoir contactés. Nous sommes heureux de vous fournir le devis pour la propriété que vous avez demandée. Le montant s'élève à XXXXX TND.\n\nN'hésitez pas à nous contacter si vous avez des questions ou si vous avez besoin de plus amples informations. Nous sommes à votre disposition.\n\nCordialement,\nLe Point Immobilier Tunisie.";
+
+    var mailtoLink =
+      "mailto:" +
+      email +
+      "?subject=" +
+      encodeURIComponent(subject) +
+      "&body=" +
+      encodeURIComponent(body);
+
+    // Open the mailto link in a new tab
+    window.open(mailtoLink);
+  }
 
   useEffect(() => {
     const fetchContactRequests = async () => {
@@ -67,25 +83,43 @@ const Feedback = () => {
   }, []);
 
   const markContactAsSeen = async (requestId) => {
-    const database = getDatabase();
-    const contactRequestsRef = ref(
-      database,
-      `requests/contactRequests/${requestId}`
+    await markAsSeen(
+      requestId,
+      "contactRequests",
+      setUnseenContactRequests,
+      setSeenContactRequests
     );
+  };
+
+  const markQuoteAsSeen = async (requestId) => {
+    await markAsSeen(
+      requestId,
+      "quoteRequests",
+      setUnseenQuoteRequests,
+      setSeenQuoteRequests
+    );
+  };
+
+  const markAsSeen = async (
+    requestId,
+    requestType,
+    setUnseenRequests,
+    setSeenRequests
+  ) => {
+    const database = getDatabase();
+    const requestsRef = ref(database, `requests/${requestType}/${requestId}`);
 
     try {
-      await update(contactRequestsRef, {
+      await update(requestsRef, {
         state: "seen",
       });
 
       // Fetch updated requests
-      const contactSnapshot = await get(
-        ref(database, "requests/contactRequests")
-      );
-      const contactData = contactSnapshot.val();
+      const snapshot = await get(ref(database, `requests/${requestType}`));
+      const data = snapshot.val();
 
-      if (contactData) {
-        const requestsArray = Object.values(contactData);
+      if (data) {
+        const requestsArray = Object.values(data);
         const unseenRequests = requestsArray.filter(
           (request) => request.state === "unseen"
         );
@@ -93,32 +127,50 @@ const Feedback = () => {
           (request) => request.state === "seen"
         );
 
-        setUnseenContactRequests(unseenRequests);
-        setSeenContactRequests(seenRequests);
+        setUnseenRequests(unseenRequests);
+        setSeenRequests(seenRequests);
       }
     } catch (error) {
-      console.error("Error marking message as seen:", error);
+      console.error("Error marking request as seen:", error);
     }
   };
 
-  const deleteMessage = async (requestId) => {
-    const database = getDatabase();
-    const contactRequestsRef = ref(
-      database,
-      `requests/contactRequests/${requestId}`
+  const deleteContactMessage = async (requestId) => {
+    await deleteMessage(
+      requestId,
+      "contactRequests",
+      setUnseenContactRequests,
+      setSeenContactRequests
     );
+  };
+
+  const deleteQuoteRequest = async (requestId) => {
+    await deleteMessage(
+      requestId,
+      "quoteRequests",
+      setUnseenQuoteRequests,
+      setSeenQuoteRequests
+    );
+  };
+
+  const deleteMessage = async (
+    requestId,
+    requestType,
+    setUnseenRequests,
+    setSeenRequests
+  ) => {
+    const database = getDatabase();
+    const requestsRef = ref(database, `requests/${requestType}/${requestId}`);
 
     try {
-      await remove(contactRequestsRef);
+      await remove(requestsRef);
 
       // Fetch updated requests
-      const contactSnapshot = await get(
-        ref(database, "requests/contactRequests")
-      );
-      const contactData = contactSnapshot.val();
+      const snapshot = await get(ref(database, `requests/${requestType}`));
+      const data = snapshot.val();
 
-      if (contactData) {
-        const requestsArray = Object.values(contactData);
+      if (data) {
+        const requestsArray = Object.values(data);
         const unseenRequests = requestsArray.filter(
           (request) => request.state === "unseen"
         );
@@ -126,8 +178,8 @@ const Feedback = () => {
           (request) => request.state === "seen"
         );
 
-        setUnseenContactRequests(unseenRequests);
-        setSeenContactRequests(seenRequests);
+        setUnseenRequests(unseenRequests);
+        setSeenRequests(seenRequests);
       }
     } catch (error) {
       console.error("Error deleting message:", error);
@@ -144,7 +196,7 @@ const Feedback = () => {
           <div className="feedback-section-header">
             <span className="feedback-section-title">Messages non lus</span>
           </div>
-          <div className="contact-requests">
+          <div className="quote-requests">
             <table className="contact-table">
               <thead>
                 <tr>
@@ -156,10 +208,15 @@ const Feedback = () => {
               </thead>
               <tbody>
                 {unseenQuoteRequests.map((request) => (
-                  <tr key={request.requestid}>
+                  <tr key={request.requestid} onClick={sendEmail()}>
                     <td>
-                      <a href={`mailto:${request.email}`}>{request.email}</a>
+                      <a
+                        href={`mailto:${request.email}?subject=demande%20de%20devis%20-%20Le%20Point%20Immobilier%20Tunisie&body=Bonjour%2C%0D%0A%0D%0ANous%20voulons%20vous%20remercier%20pour%20votre%20confiance%20et%20pour%20nous%20avoir%20contact%C3%A9s.%20Nous%20sommes%20heureux%20de%20vous%20fournir%20le%20devis%20pour%20la%20propri%C3%A9t%C3%A9%20que%20vous%20avez%20demand%C3%A9e.%20Le%20montant%20s%27%C3%A9l%C3%A8ve%20%C3%A0%20XXXXX%20TND.%0D%0A%0D%0AN%27h%C3%A9sitez%20pas%20%C3%A0%20nous%20contacter%20si%20vous%20avez%20des%20questions%20ou%20si%20vous%20avez%20besoin%20de%20plus%20amples%20informations.%20Nous%20sommes%20%C3%A0%20votre%20disposition.%0D%0A%0D%0ACordialement%2C%0D%0ALe%20Point%20Immobilier%20Tunisie.`}
+                      >
+                        {request.email}
+                      </a>
                     </td>
+
                     <td>{request.listingID}</td>
                     <td>
                       {new Date(request.dateTime).toLocaleString("fr-FR")}
@@ -167,13 +224,13 @@ const Feedback = () => {
                     <td>
                       <button
                         className="action-btn"
-                        onClick={() => markContactAsSeen(request.requestid)}
+                        onClick={() => markQuoteAsSeen(request.requestid)}
                       >
                         Marquer comme vu
                       </button>
                       <button
                         className="action-btn"
-                        onClick={() => deleteMessage(request.requestid)}
+                        onClick={() => deleteQuoteRequest(request.requestid)}
                       >
                         Supprimer
                       </button>
@@ -188,38 +245,34 @@ const Feedback = () => {
           <div className="feedback-section-header">
             <span className="feedback-section-title">Messages déjà lus</span>
           </div>
-          <div className="contact-requests">
+          <div className="quote-requests">
             <table className="contact-table">
               <thead>
                 <tr>
-                  <th>Nom</th>
                   <th>Email</th>
-                  <th>Téléphone</th>
-                  <th>Message</th>
+                  <th>Listing ID</th>
                   <th>Date et heure</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {seenContactRequests.map((request) => (
+                {seenQuoteRequests.map((request) => (
                   <tr key={request.requestid}>
-                    <td>{request.name}</td>
                     <td>
-                      <a href={`mailto:${request.email}`}>{request.email}</a>
+                      <a
+                        href={`mailto:${request.email}?subject=demande%20de%20devis%20-%20Le%20Point%20Immobilier%20Tunisie&body=Bonjour%2C%0D%0A%0D%0ANous%20voulons%20vous%20remercier%20pour%20votre%20confiance%20et%20pour%20nous%20avoir%20contact%C3%A9s.%20Nous%20sommes%20heureux%20de%20vous%20fournir%20le%20devis%20pour%20la%20propri%C3%A9t%C3%A9%20que%20vous%20avez%20demand%C3%A9e.%20Le%20montant%20s%27%C3%A9l%C3%A8ve%20%C3%A0%20XXXXX%20TND.%0D%0A%0D%0AN%27h%C3%A9sitez%20pas%20%C3%A0%20nous%20contacter%20si%20vous%20avez%20des%20questions%20ou%20si%20vous%20avez%20besoin%20de%20plus%20amples%20informations.%20Nous%20sommes%20%C3%A0%20votre%20disposition.%0D%0A%0D%0ACordialement%2C%0D%0ALe%20Point%20Immobilier%20Tunisie.`}
+                      >
+                        {request.email}
+                      </a>
                     </td>
-                    <td>
-                      <a href={`tel:${request.phone}`}>{request.phone}</a>
-                    </td>
-
-                    <td>{request.body}</td>
+                    <td>{request.listingID}</td>
                     <td>
                       {new Date(request.dateTime).toLocaleString("fr-FR")}
                     </td>
-
                     <td>
                       <button
                         className="action-btn"
-                        onClick={() => deleteMessage(request.requestid)}
+                        onClick={() => deleteQuoteRequest(request.requestid)}
                       >
                         Supprimer
                       </button>
@@ -257,17 +310,19 @@ const Feedback = () => {
                   <tr key={request.requestid}>
                     <td>{request.name}</td>
                     <td>
-                      <a href={`mailto:${request.email}`}>{request.email}</a>
+                      <a
+                        href={`mailto:${request.email}?subject=demande%20de%20devis%20-%20Le%20Point%20Immobilier%20Tunisie&body=Bonjour%2C%0D%0A%0D%0ANous%20voulons%20vous%20remercier%20pour%20votre%20confiance%20et%20pour%20nous%20avoir%20contact%C3%A9s.%20Nous%20sommes%20heureux%20de%20vous%20fournir%20le%20devis%20pour%20la%20propri%C3%A9t%C3%A9%20que%20vous%20avez%20demand%C3%A9e.%20Le%20montant%20s%27%C3%A9l%C3%A8ve%20%C3%A0%20XXXXX%20TND.%0D%0A%0D%0AN%27h%C3%A9sitez%20pas%20%C3%A0%20nous%20contacter%20si%20vous%20avez%20des%20questions%20ou%20si%20vous%20avez%20besoin%20de%20plus%20amples%20informations.%20Nous%20sommes%20%C3%A0%20votre%20disposition.%0D%0A%0D%0ACordialement%2C%0D%0ALe%20Point%20Immobilier%20Tunisie.`}
+                      >
+                        {request.email}
+                      </a>
                     </td>
                     <td>
                       <a href={`tel:${request.phone}`}>{request.phone}</a>
                     </td>
-
                     <td>{request.body}</td>
                     <td>
                       {new Date(request.dateTime).toLocaleString("fr-FR")}
                     </td>
-
                     <td>
                       <button
                         className="action-btn"
@@ -277,7 +332,7 @@ const Feedback = () => {
                       </button>
                       <button
                         className="action-btn"
-                        onClick={() => deleteMessage(request.requestid)}
+                        onClick={() => deleteContactMessage(request.requestid)}
                       >
                         Supprimer
                       </button>
@@ -309,21 +364,23 @@ const Feedback = () => {
                   <tr key={request.requestid}>
                     <td>{request.name}</td>
                     <td>
-                      <a href={`mailto:${request.email}`}>{request.email}</a>
+                      <a
+                        href={`mailto:${request.email}?subject=demande%20de%20devis%20-%20Le%20Point%20Immobilier%20Tunisie&body=Bonjour%2C%0D%0A%0D%0ANous%20voulons%20vous%20remercier%20pour%20votre%20confiance%20et%20pour%20nous%20avoir%20contact%C3%A9s.%20Nous%20sommes%20heureux%20de%20vous%20fournir%20le%20devis%20pour%20la%20propri%C3%A9t%C3%A9%20que%20vous%20avez%20demand%C3%A9e.%20Le%20montant%20s%27%C3%A9l%C3%A8ve%20%C3%A0%20XXXXX%20TND.%0D%0A%0D%0AN%27h%C3%A9sitez%20pas%20%C3%A0%20nous%20contacter%20si%20vous%20avez%20des%20questions%20ou%20si%20vous%20avez%20besoin%20de%20plus%20amples%20informations.%20Nous%20sommes%20%C3%A0%20votre%20disposition.%0D%0A%0D%0ACordialement%2C%0D%0ALe%20Point%20Immobilier%20Tunisie.`}
+                      >
+                        {request.email}
+                      </a>
                     </td>
                     <td>
                       <a href={`tel:${request.phone}`}>{request.phone}</a>
                     </td>
-
                     <td>{request.body}</td>
                     <td>
                       {new Date(request.dateTime).toLocaleString("fr-FR")}
                     </td>
-
                     <td>
                       <button
                         className="action-btn"
-                        onClick={() => deleteMessage(request.requestid)}
+                        onClick={() => deleteContactMessage(request.requestid)}
                       >
                         Supprimer
                       </button>
