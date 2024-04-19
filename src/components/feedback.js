@@ -8,24 +8,6 @@ const Feedback = () => {
   const [unseenQuoteRequests, setUnseenQuoteRequests] = useState([]);
   const [seenQuoteRequests, setSeenQuoteRequests] = useState([]);
 
-  function sendEmail() {
-    var email = "ezezz@zez.cc";
-    var subject = "demande de devis - Le Point Immobilier Tunisie";
-    var body =
-      "Bonjour,\n\nNous voulons vous remercier pour votre confiance et pour nous avoir contactés. Nous sommes heureux de vous fournir le devis pour la propriété que vous avez demandée. Le montant s'élève à XXXXX TND.\n\nN'hésitez pas à nous contacter si vous avez des questions ou si vous avez besoin de plus amples informations. Nous sommes à votre disposition.\n\nCordialement,\nLe Point Immobilier Tunisie.";
-
-    var mailtoLink =
-      "mailto:" +
-      email +
-      "?subject=" +
-      encodeURIComponent(subject) +
-      "&body=" +
-      encodeURIComponent(body);
-
-    // Open the mailto link in a new tab
-    window.open(mailtoLink);
-  }
-
   useEffect(() => {
     const fetchContactRequests = async () => {
       const database = getDatabase();
@@ -186,6 +168,20 @@ const Feedback = () => {
     }
   };
 
+  const fetchListingHeader = async (listingID, type) => {
+    try {
+      const database = getDatabase();
+      const listingRef = ref(database, `listings/${type}/${listingID}/header`);
+      const snapshot = await get(listingRef);
+      const header = snapshot.val();
+
+      return header;
+    } catch (error) {
+      console.error("Error fetching listing header:", error);
+      return null;
+    }
+  };
+
   return (
     <div className="feedback-container">
       <div className="section">
@@ -201,14 +197,14 @@ const Feedback = () => {
               <thead>
                 <tr>
                   <th>Email</th>
-                  <th>Listing ID</th>
+                  <th>Annonce</th>
                   <th>Date et heure</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {unseenQuoteRequests.map((request) => (
-                  <tr key={request.requestid} onClick={sendEmail()}>
+                  <tr key={request.requestid}>
                     <td>
                       <a
                         href={`mailto:${request.email}?subject=demande%20de%20devis%20-%20Le%20Point%20Immobilier%20Tunisie&body=Bonjour%2C%0D%0A%0D%0ANous%20voulons%20vous%20remercier%20pour%20votre%20confiance%20et%20pour%20nous%20avoir%20contact%C3%A9s.%20Nous%20sommes%20heureux%20de%20vous%20fournir%20le%20devis%20pour%20la%20propri%C3%A9t%C3%A9%20que%20vous%20avez%20demand%C3%A9e.%20Le%20montant%20s%27%C3%A9l%C3%A8ve%20%C3%A0%20XXXXX%20TND.%0D%0A%0D%0AN%27h%C3%A9sitez%20pas%20%C3%A0%20nous%20contacter%20si%20vous%20avez%20des%20questions%20ou%20si%20vous%20avez%20besoin%20de%20plus%20amples%20informations.%20Nous%20sommes%20%C3%A0%20votre%20disposition.%0D%0A%0D%0ACordialement%2C%0D%0ALe%20Point%20Immobilier%20Tunisie.`}
@@ -217,7 +213,7 @@ const Feedback = () => {
                       </a>
                     </td>
 
-                    <td>{request.listingID}</td>
+                    <td>{request.header}</td>
                     <td>
                       {new Date(request.dateTime).toLocaleString("fr-FR")}
                     </td>
@@ -250,7 +246,7 @@ const Feedback = () => {
               <thead>
                 <tr>
                   <th>Email</th>
-                  <th>Listing ID</th>
+                  <th>Annonce</th>
                   <th>Date et heure</th>
                   <th>Actions</th>
                 </tr>
@@ -265,7 +261,7 @@ const Feedback = () => {
                         {request.email}
                       </a>
                     </td>
-                    <td>{request.listingID}</td>
+                    <td>{request.header}</td>
                     <td>
                       {new Date(request.dateTime).toLocaleString("fr-FR")}
                     </td>

@@ -21,6 +21,20 @@
   margin: 40px;
   background-color: var(--dl-color-gray-500);
 }
+.section {
+  width: 100%;
+  /* Adjust the width as needed */
+  background-color: rgb(218, 218, 218, 0.3);
+  border-radius: 15px;
+  /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  /* Adjust the shadow as needed */
+  padding: 20px;
+  margin: 20px auto;
+  /* Center the card horizontally */
+  text-align: center;
+  /* Center the content horizontally */
+}
 
 .feedback-section-header {
   margin-bottom: 10px;
@@ -47,8 +61,25 @@
 }
 
 .contact-table th {
-  background-color: #f2f2f2;
+  
   font-weight: bold;
+}
+table{
+  border-radius: 10px;
+}
+button{
+  border-radius: 10px;
+}
+
+th {
+  background-color: #A22020;
+  opacity: 50%;
+  color: #ffffff;
+  /* White text color */
+  padding: 10px;
+  /* Adjust padding as needed */
+  text-align: center;
+  /* Center text horizontally */
 }
 
 .contact-table td {
