@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./feedback.css";
 import { getDatabase, ref, get, update, remove } from "firebase/database";
+import Details from "../components/details";
 
 const Feedback = () => {
   const [unseenContactRequests, setUnseenContactRequests] = useState([]);
@@ -168,18 +169,36 @@ const Feedback = () => {
     }
   };
 
-  const fetchListingHeader = async (listingID, type) => {
+  const [detailsVisible, setDetailsVisible] = useState(false);
+  const [selectedListing, setSelectedListing] = useState(null);
+
+  const handleListingClick = async (request) => {
     try {
       const database = getDatabase();
-      const listingRef = ref(database, `listings/${type}/${listingID}/header`);
-      const snapshot = await get(listingRef);
-      const header = snapshot.val();
+      const listingRef = ref(
+        database,
+        `listings/${request.type}/${request.listingID}`
+      );
 
-      return header;
+      const snapshot = await get(listingRef);
+
+      if (snapshot.exists()) {
+        const listingData = snapshot.val();
+        setSelectedListing(listingData);
+        setDetailsVisible(true);
+      } else {
+        console.log("Listing not found.");
+        // Handle the case where the listing doesn't exist
+      }
     } catch (error) {
-      console.error("Error fetching listing header:", error);
-      return null;
+      console.error("Error fetching listing:", error);
+      // Handle the error appropriately, e.g., display an error message
     }
+  };
+
+  const handleCloseDetails = () => {
+    setDetailsVisible(false);
+    setSelectedListing(null);
   };
 
   return (
@@ -213,7 +232,9 @@ const Feedback = () => {
                       </a>
                     </td>
 
-                    <td>{request.header}</td>
+                    <td onClick={() => handleListingClick(request)}>
+                      {request.header}
+                    </td>
                     <td>
                       {new Date(request.dateTime).toLocaleString("fr-FR")}
                     </td>
@@ -261,7 +282,9 @@ const Feedback = () => {
                         {request.email}
                       </a>
                     </td>
-                    <td>{request.header}</td>
+                    <td onClick={() => handleListingClick(request)}>
+                      {request.header}
+                    </td>
                     <td>
                       {new Date(request.dateTime).toLocaleString("fr-FR")}
                     </td>
@@ -388,6 +411,31 @@ const Feedback = () => {
           </div>
         </div>
       </div>
+      {detailsVisible && (
+        <>
+          <div className="details-overlay" onClick={handleCloseDetails}></div>
+
+          <Details
+            id={selectedListing.id}
+            title={selectedListing.header}
+            photos={selectedListing.photos}
+            price={selectedListing.price}
+            baths={selectedListing.baths}
+            header={selectedListing.header}
+            location={selectedListing.location}
+            area={selectedListing.area}
+            body={selectedListing.body}
+            beds={selectedListing.beds}
+            garage={selectedListing.garage}
+            pool={selectedListing.pool}
+            garden={selectedListing.garden}
+            nature={selectedListing.nature}
+            interval={selectedListing.interval}
+            closeDetails={handleCloseDetails}
+            type={selectedListing.type}
+          />
+        </>
+      )}
     </div>
   );
 };

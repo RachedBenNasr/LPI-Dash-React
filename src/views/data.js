@@ -73,7 +73,6 @@ const Data = () => {
       const totalUnseenRequests =
         totalUnseenContactRequests + totalUnseenQuoteRequests;
       setUnseenRequests(totalUnseenRequests);
-      console.log(totalUnseenRequests);
     };
 
     fetchNumberOfRequests();
