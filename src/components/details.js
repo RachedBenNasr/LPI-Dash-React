@@ -1,24 +1,81 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 
-import './details.css'
+import { getDatabase, ref, set, push } from "firebase/database";
+
+import {
+  getStorage,
+  ref as Sref,
+  listAll,
+  getDownloadURL,
+} from "firebase/storage";
+
+import ImageGallery from "react-image-gallery";
+import "react-image-gallery/styles/css/image-gallery.css";
+
+import "./details.css";
 
 const Details = (props) => {
+  const [quote, setQuote] = useState({
+    requestid: "",
+    email: "",
+    listingID: "",
+    state: "unseen",
+    dateTime: "",
+    type: "",
+    header: props.title,
+  });
+
+  const [imageList, setImageList] = useState([]);
+
+  useEffect(() => {
+    // Function to fetch the images for a listing from Firebase Storage
+    const fetchImages = async () => {
+      try {
+        const storage = getStorage();
+        let listingRef = Sref(storage, `sale/${props.id}`);
+
+        // List all items in the folder
+        let listingImages = await listAll(listingRef);
+
+        if (listingImages.items.length == 0) {
+          listingRef = Sref(storage, `rent/${props.id}`);
+
+          listingImages = await listAll(listingRef);
+        }
+
+        // Create an array of objects with the required format
+        const imagesArray = await Promise.all(
+          listingImages.items.map(async (item) => ({
+            original: await getDownloadURL(item),
+          }))
+        );
+
+        // Set the state with the formatted images
+        setImageList(imagesArray);
+      } catch (error) {
+        console.error("Error fetching images:", error);
+      }
+    };
+
+    // Call the function to fetch the images
+    fetchImages();
+  }, [props.id]);
+
   return (
-    <div className={`details-blog-post-card ${props.rootClassName} `}>
+    <div className={`details-blog-post-card`}>
       <div className="details-container">
-        <svg viewBox="0 0 804.5714285714286 1024" className="details-icon">
+        <svg
+          viewBox="0 0 804.5714285714286 1024"
+          className="details-icon"
+          onClick={props.closeDetails}
+        >
           <path d="M741.714 755.429c0 14.286-5.714 28.571-16 38.857l-77.714 77.714c-10.286 10.286-24.571 16-38.857 16s-28.571-5.714-38.857-16l-168-168-168 168c-10.286 10.286-24.571 16-38.857 16s-28.571-5.714-38.857-16l-77.714-77.714c-10.286-10.286-16-24.571-16-38.857s5.714-28.571 16-38.857l168-168-168-168c-10.286-10.286-16-24.571-16-38.857s5.714-28.571 16-38.857l77.714-77.714c10.286-10.286 24.571-16 38.857-16s28.571 5.714 38.857 16l168 168 168-168c10.286-10.286 24.571-16 38.857-16s28.571 5.714 38.857 16l77.714 77.714c10.286 10.286 16 24.571 16 38.857s-5.714 28.571-16 38.857l-168 168 168 168c10.286 10.286 16 24.571 16 38.857z"></path>
         </svg>
-        <div className="details-container1">
-          <svg viewBox="0 0 768 1024" className="details-icon02 hover">
-            <path d="M669.143 172l-303.429 303.429 303.429 303.429c14.286 14.286 14.286 37.143 0 51.429l-94.857 94.857c-14.286 14.286-37.143 14.286-51.429 0l-424-424c-14.286-14.286-14.286-37.143 0-51.429l424-424c14.286-14.286 37.143-14.286 51.429 0l94.857 94.857c14.286 14.286 14.286 37.143 0 51.429z"></path>
-          </svg>
-          <svg viewBox="0 0 694.8571428571428 1024" className="details-icon04">
-            <path d="M632.571 501.143l-424 424c-14.286 14.286-37.143 14.286-51.429 0l-94.857-94.857c-14.286-14.286-14.286-37.143 0-51.429l303.429-303.429-303.429-303.429c-14.286-14.286-14.286-37.143 0-51.429l94.857-94.857c14.286-14.286 37.143-14.286 51.429 0l424 424c14.286 14.286 14.286 37.143 0 51.429z"></path>
-          </svg>
-        </div>
+
+        <ImageGallery items={imageList} showIndex={true} />
+
         <div className="details-content">
           <div className="details-left">
             <span className="details-text">{props.title}</span>
@@ -32,7 +89,7 @@ const Details = (props) => {
               <span className="details-text01">{props.location}</span>
             </div>
             <div className="details-description">
-              <span className="details-text02">{props.description}</span>
+              <span className="details-text02">Description:</span>
               <span className="details-text03">{props.body}</span>
             </div>
           </div>
@@ -61,7 +118,7 @@ const Details = (props) => {
                   >
                     <path d="M1170.286 877.714v73.143h-1170.286v-877.714h73.143v804.571h1097.143zM950.857 292.571l146.286 512h-950.857v-329.143l256-329.143 329.143 329.143z"></path>
                   </svg>
-                  <span className="details-text06">{props.area}</span>
+                  <span className="details-text06">{props.area} m²</span>
                 </div>
               </div>
               <div className="details-extras">
@@ -72,18 +129,41 @@ const Details = (props) => {
                   >
                     <path d="M274.286 621.714c0-50.286-41.143-91.429-91.429-91.429s-91.429 41.143-91.429 91.429 41.143 91.429 91.429 91.429 91.429-41.143 91.429-91.429zM294.857 438.857h580.571l-50.857-204c-1.714-6.286-13.143-15.429-20-15.429h-438.857c-6.857 0-18.286 9.143-20 15.429zM1078.857 621.714c0-50.286-41.143-91.429-91.429-91.429s-91.429 41.143-91.429 91.429 41.143 91.429 91.429 91.429 91.429-41.143 91.429-91.429zM1170.286 566.857v219.429c0 10.286-8 18.286-18.286 18.286h-54.857v73.143c0 60.571-49.143 109.714-109.714 109.714s-109.714-49.143-109.714-109.714v-73.143h-585.143v73.143c0 60.571-49.143 109.714-109.714 109.714s-109.714-49.143-109.714-109.714v-73.143h-54.857c-10.286 0-18.286-8-18.286-18.286v-219.429c0-70.857 57.143-128 128-128h16l60-239.429c17.714-72 87.429-126.286 161.714-126.286h438.857c74.286 0 144 54.286 161.714 126.286l60 239.429h16c70.857 0 128 57.143 128 128z"></path>
                   </svg>
-                  <span className="details-text07">{props.cars}</span>
+                  {/* garage verification */}
+                  <div>
+                    {props.garage ? (
+                      <svg viewBox="0 0 1024 1024" className="details-icon22">
+                        <path d="M954.857 323.429c0 14.286-5.714 28.571-16 38.857l-491.429 491.429c-10.286 10.286-24.571 16-38.857 16s-28.571-5.714-38.857-16l-284.571-284.571c-10.286-10.286-16-24.571-16-38.857s5.714-28.571 16-38.857l77.714-77.714c10.286-10.286 24.571-16 38.857-16s28.571 5.714 38.857 16l168 168.571 374.857-375.429c10.286-10.286 24.571-16 38.857-16s28.571 5.714 38.857 16l77.714 77.714c10.286 10.286 16 24.571 16 38.857z"></path>
+                      </svg>
+                    ) : (
+                      <svg
+                        viewBox="0 0 804.5714285714286 1024"
+                        className="details-icon18"
+                      >
+                        <path d="M741.714 755.429c0 14.286-5.714 28.571-16 38.857l-77.714 77.714c-10.286 10.286-24.571 16-38.857 16s-28.571-5.714-38.857-16l-168-168-168 168c-10.286 10.286-24.571 16-38.857 16s-28.571-5.714-38.857-16l-77.714-77.714c-10.286-10.286-16-24.571-16-38.857s5.714-28.571 16-38.857l168-168-168-168c-10.286-10.286-16-24.571-16-38.857s5.714-28.571 16-38.857l77.714-77.714c10.286-10.286 24.571-16 38.857-16s28.571 5.714 38.857 16l168 168 168-168c10.286-10.286 24.571-16 38.857-16s28.571 5.714 38.857 16l77.714 77.714c10.286 10.286 16 24.571 16 38.857s-5.714 28.571-16 38.857l-168 168 168 168c10.286 10.286 16 24.571 16 38.857z"></path>
+                      </svg>
+                    )}
+                  </div>
                 </div>
                 <div className="details-container6">
                   <svg viewBox="0 0 1024 1024" className="details-icon16">
                     <path d="M598 234q0-44 31-75t75-31 75 31 31 75-31 76-75 32-75-32-31-76zM370 512q-24 0-50-16-8-6-32-16l138-138-42-44q-64-64-170-64v-106q82 0 134 19t100 67l274 272q-12 8-18 10-26 16-50 16-22 0-48-16-44-26-94-26t-94 26q-26 16-48 16zM938 704q-46 0-92-28-22-14-50-14-26 0-48 14-46 28-94 28-46 0-92-28-22-14-50-14-26 0-48 14-46 28-94 28-46 0-92-28-22-14-50-14-26 0-48 14-46 28-94 28v-86q26 0 48-14 46-28 94-28 46 0 92 28 22 14 50 14 26 0 48-14 46-28 94-28 46 0 92 28 22 14 50 14 26 0 48-14 46-28 94-28 46 0 92 28 22 14 50 14v86zM938 896q-46 0-92-28-22-14-50-14-26 0-48 14-46 28-94 28-46 0-92-28-22-14-50-14-26 0-48 14-46 28-94 28t-94-28q-22-14-48-14-28 0-50 14-46 28-92 28v-86q26 0 48-14 46-28 94-28 46 0 92 28 22 14 50 14 26 0 48-14 46-28 94-28t94 28q22 14 48 14 28 0 50-14 46-28 92-28 48 0 94 28 22 14 48 14v86z"></path>
                   </svg>
-                  <svg
-                    viewBox="0 0 804.5714285714286 1024"
-                    className="details-icon18"
-                  >
-                    <path d="M741.714 755.429c0 14.286-5.714 28.571-16 38.857l-77.714 77.714c-10.286 10.286-24.571 16-38.857 16s-28.571-5.714-38.857-16l-168-168-168 168c-10.286 10.286-24.571 16-38.857 16s-28.571-5.714-38.857-16l-77.714-77.714c-10.286-10.286-16-24.571-16-38.857s5.714-28.571 16-38.857l168-168-168-168c-10.286-10.286-16-24.571-16-38.857s5.714-28.571 16-38.857l77.714-77.714c10.286-10.286 24.571-16 38.857-16s28.571 5.714 38.857 16l168 168 168-168c10.286-10.286 24.571-16 38.857-16s28.571 5.714 38.857 16l77.714 77.714c10.286 10.286 16 24.571 16 38.857s-5.714 28.571-16 38.857l-168 168 168 168c10.286 10.286 16 24.571 16 38.857z"></path>
-                  </svg>
+                  {/* Pool verification */}
+                  <div>
+                    {props.pool ? (
+                      <svg viewBox="0 0 1024 1024" className="details-icon22">
+                        <path d="M954.857 323.429c0 14.286-5.714 28.571-16 38.857l-491.429 491.429c-10.286 10.286-24.571 16-38.857 16s-28.571-5.714-38.857-16l-284.571-284.571c-10.286-10.286-16-24.571-16-38.857s5.714-28.571 16-38.857l77.714-77.714c10.286-10.286 24.571-16 38.857-16s28.571 5.714 38.857 16l168 168.571 374.857-375.429c10.286-10.286 24.571-16 38.857-16s28.571 5.714 38.857 16l77.714 77.714c10.286 10.286 16 24.571 16 38.857z"></path>
+                      </svg>
+                    ) : (
+                      <svg
+                        viewBox="0 0 804.5714285714286 1024"
+                        className="details-icon18"
+                      >
+                        <path d="M741.714 755.429c0 14.286-5.714 28.571-16 38.857l-77.714 77.714c-10.286 10.286-24.571 16-38.857 16s-28.571-5.714-38.857-16l-168-168-168 168c-10.286 10.286-24.571 16-38.857 16s-28.571-5.714-38.857-16l-77.714-77.714c-10.286-10.286-16-24.571-16-38.857s5.714-28.571 16-38.857l168-168-168-168c-10.286-10.286-16-24.571-16-38.857s5.714-28.571 16-38.857l77.714-77.714c10.286-10.286 24.571-16 38.857-16s28.571 5.714 38.857 16l168 168 168-168c10.286-10.286 24.571-16 38.857-16s28.571 5.714 38.857 16l77.714 77.714c10.286 10.286 16 24.571 16 38.857s-5.714 28.571-16 38.857l-168 168 168 168c10.286 10.286 16 24.571 16 38.857z"></path>
+                      </svg>
+                    )}
+                  </div>
                 </div>
                 <div className="details-container7">
                   <svg
@@ -92,76 +172,90 @@ const Details = (props) => {
                   >
                     <path d="M859.429 841.143c0 20-16.571 36.571-36.571 36.571h-264c1.714 36.571 6.286 74.857 6.286 112 0 18.857-15.429 34.286-34.857 34.286h-182.857c-19.429 0-34.857-15.429-34.857-34.286 0-37.143 4.571-75.429 6.286-112h-264c-20 0-36.571-16.571-36.571-36.571 0-9.714 4-18.857 10.857-25.714l229.714-230.286h-130.857c-20 0-36.571-16.571-36.571-36.571 0-9.714 4-18.857 10.857-25.714l229.714-230.286h-112.571c-20 0-36.571-16.571-36.571-36.571 0-9.714 4-18.857 10.857-25.714l219.429-219.429c6.857-6.857 16-10.857 25.714-10.857s18.857 4 25.714 10.857l219.429 219.429c6.857 6.857 10.857 16 10.857 25.714 0 20-16.571 36.571-36.571 36.571h-112.571l229.714 230.286c6.857 6.857 10.857 16 10.857 25.714 0 20-16.571 36.571-36.571 36.571h-130.857l229.714 230.286c6.857 6.857 10.857 16 10.857 25.714z"></path>
                   </svg>
-                  <svg viewBox="0 0 1024 1024" className="details-icon22">
-                    <path d="M954.857 323.429c0 14.286-5.714 28.571-16 38.857l-491.429 491.429c-10.286 10.286-24.571 16-38.857 16s-28.571-5.714-38.857-16l-284.571-284.571c-10.286-10.286-16-24.571-16-38.857s5.714-28.571 16-38.857l77.714-77.714c10.286-10.286 24.571-16 38.857-16s28.571 5.714 38.857 16l168 168.571 374.857-375.429c10.286-10.286 24.571-16 38.857-16s28.571 5.714 38.857 16l77.714 77.714c10.286 10.286 16 24.571 16 38.857z"></path>
-                  </svg>
+                  {/* garden verification */}
+                  <div>
+                    {props.garden ? (
+                      <svg viewBox="0 0 1024 1024" className="details-icon22">
+                        <path d="M954.857 323.429c0 14.286-5.714 28.571-16 38.857l-491.429 491.429c-10.286 10.286-24.571 16-38.857 16s-28.571-5.714-38.857-16l-284.571-284.571c-10.286-10.286-16-24.571-16-38.857s5.714-28.571 16-38.857l77.714-77.714c10.286-10.286 24.571-16 38.857-16s28.571 5.714 38.857 16l168 168.571 374.857-375.429c10.286-10.286 24.571-16 38.857-16s28.571 5.714 38.857 16l77.714 77.714c10.286 10.286 16 24.571 16 38.857z"></path>
+                      </svg>
+                    ) : (
+                      <svg
+                        viewBox="0 0 804.5714285714286 1024"
+                        className="details-icon18"
+                      >
+                        <path d="M741.714 755.429c0 14.286-5.714 28.571-16 38.857l-77.714 77.714c-10.286 10.286-24.571 16-38.857 16s-28.571-5.714-38.857-16l-168-168-168 168c-10.286 10.286-24.571 16-38.857 16s-28.571-5.714-38.857-16l-77.714-77.714c-10.286-10.286-16-24.571-16-38.857s5.714-28.571 16-38.857l168-168-168-168c-10.286-10.286-16-24.571-16-38.857s5.714-28.571 16-38.857l77.714-77.714c10.286-10.286 24.571-16 38.857-16s28.571 5.714 38.857 16l168 168 168-168c10.286-10.286 24.571-16 38.857-16s28.571 5.714 38.857 16l77.714 77.714c10.286 10.286 16 24.571 16 38.857s-5.714 28.571-16 38.857l-168 168 168 168c10.286 10.286 16 24.571 16 38.857z"></path>
+                      </svg>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
             <div className="details-separator"></div>
             <div className="details-ownership">
-              <span className="details-text08">{props.owner}</span>
-              <span className="details-text09">{props.ownership}</span>
+              <span className="details-text08">Type</span>
+              <span className="details-text09">{props.nature}</span>
             </div>
-            <div className="details-separator1"></div>
+            <div className="details-separator"></div>
             <div className="details-price">
-              <span className="details-text10">{props.range}</span>
-              <span className="details-text11">{props.price}</span>
+              <span className="details-text10">Prix</span>
+              <span className="details-text11">{props.price} TND</span>
             </div>
-            <div className="details-separator2"></div>
-            <span className="details-text12">{props.quote}</span>
+            <div className="details-separator"></div>
+            <span className="details-text12">Decision</span>
             <div className="details-container8">
-              <input
-                type="text"
-                placeholder="Email here..."
-                className="details-textinput input"
-              />
-              <button className="details-button button">
-                <span className="details-text13">
-                  <span>Send request</span>
-                  <br></br>
-                </span>
-              </button>
+              <button className="refuser-btn">Refuser</button>
+              <button className="accepter-btn">Accepter</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 Details.defaultProps = {
-  price: '800,000 DT - 900,000 DT',
-  range: 'Range',
-  owner: 'Owner:',
-  description: 'Description:',
-  area: '1200',
-  title: 'Cosy apartment for sale',
-  cars: '2',
-  quote: 'Request an Exact Quote',
-  location: 'City, Gouv',
-  baths: '3',
-  body: 'Lorem ipsum lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  beds: '2',
-  rootClassName: '',
-  ownership: 'Private',
-}
+  id: "",
+  area: "",
+  baths: "",
+  ownership: "Privé",
+  title: "",
+  beds: "",
+  garage: "",
+  description: ":",
+  quote: "",
+  location: "",
+  price: "",
+  range: "",
+  body: "",
+  closeDetails: "",
+  pool: "",
+  garden: "",
+  nature: "",
+  interval: "",
+  type: "",
+};
 
 Details.propTypes = {
+  id: PropTypes.string,
+  area: PropTypes.string,
+  baths: PropTypes.string,
+  ownership: PropTypes.string,
+  title: PropTypes.string,
+  beds: PropTypes.string,
+  garage: PropTypes.bool,
+  description: PropTypes.string,
+  quote: PropTypes.string,
+
+  location: PropTypes.string,
   price: PropTypes.string,
   range: PropTypes.string,
-  owner: PropTypes.string,
-  description: PropTypes.string,
-  area: PropTypes.string,
-  title: PropTypes.string,
-  cars: PropTypes.string,
-  quote: PropTypes.string,
-  location: PropTypes.string,
-  baths: PropTypes.string,
   body: PropTypes.string,
-  beds: PropTypes.string,
-  rootClassName: PropTypes.string,
-  ownership: PropTypes.string,
-}
+  closeDetails: PropTypes.func,
+  pool: PropTypes.bool,
+  garden: PropTypes.bool,
+  nature: PropTypes.string,
+  interval: PropTypes.string,
+  type: PropTypes.string,
+};
 
-export default Details
+export default Details;

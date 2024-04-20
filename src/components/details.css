@@ -3,24 +3,27 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border-radius: 40px;
 }
 .details-container {
   top: 50%;
   left: 50%;
-  width: 50%;
+  width: 70%;
+  min-width: 500px;
   height: auto;
   padding: var(--dl-space-space-unit);
   position: fixed;
   transform: translate(-50% , -50%);
   align-self: center;
-  box-shadow: 5px 5px 10px 0px #d4d4d4;
+  box-shadow: 5px 5px 10px 0px #3d3d3d;
   max-height: 90vh;
-  overflow-y: auto;
+  overflow-y: scroll;
   align-items: flex-end;
-  border-radius: 40px;
   flex-direction: column;
   justify-content: space-between;
   background-color: #ffffff;
+  z-index: 100;
+  border-radius: 40px;
 }
 .details-icon {
   width: 24px;
@@ -40,6 +43,7 @@
   justify-content: space-between;
   background-image: url('https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixid=M3w5MTMyMXwwfDF8c2VhcmNofDF8fGFwYXJ0bWVudHxlbnwwfHx8fDE2OTM5NDQ2NzF8MA&ixlib=rb-4.0.3&h=1500');
   background-position: center;
+  
 }
 .details-icon02 {
   transition: 0.3s;
@@ -99,6 +103,7 @@
   align-items: flex-start;
   flex-direction: column;
   justify-content: space-between;
+  
 }
 .details-text02 {
   color: var(--dl-color-gray-500);
@@ -118,7 +123,7 @@
 .details-right {
   flex: 0 0 auto;
   width: 30%;
-  height: 100%;
+  height: auto;
   margin: var(--dl-space-space-twounits);
   display: flex;
   padding: var(--dl-space-space-unit);
@@ -186,6 +191,7 @@
   font-size: 12px;
   text-align: left;
   font-weight: 300;
+  
 }
 .details-container4 {
   display: flex;
@@ -322,13 +328,8 @@
   text-align: left;
   font-weight: 300;
 }
-.details-separator2 {
-  width: 90%;
-  height: 2px;
-  margin: var(--dl-space-space-halfunit);
-  opacity: 0.3;
-  background-color: var(--dl-color-gray-500);
-}
+
+
 .details-text12 {
   color: var(--dl-color-gray-500);
   font-size: 12px;
@@ -344,25 +345,53 @@
   height: auto;
   display: flex;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
 }
-.details-textinput {
-  font-size: 0.75rem;
-  border-color: var(--dl-color-gray-500);
-  margin-bottom: var(--dl-space-space-unit);
+
+/* Accepter button */
+/* Accepter button */
+.accepter-btn {
+  background-color: #28a745;
+  /* Green color */
+  color: #fff;
+  /* White text color */
+  border: 2px solid #218838;
+  /* Darker green border */
+  padding: 5px 10px;
+  /* Reduced padding */
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
+  /* Add margin to create space between buttons */
 }
-.details-button {
-  color: var(--dl-color-gray-white);
-  padding: var(--dl-space-space-halfunit);
-  font-size: 0.75rem;
-  transition: 0.3s;
-  margin-left: var(--dl-space-space-unit);
-  background-color: var(--dl-color-gray-black);
+
+.accepter-btn:hover {
+  background-color: #218838;
+  /* Darker green on hover */
 }
-.details-button:hover {
-  color: var(--dl-color-gray-black);
-  background-color: transparent;
+
+/* Refuser button */
+.refuser-btn {
+  background-color: #dc3545;
+  /* Red color */
+  color: #fff;
+  /* White text color */
+  border: 2px solid #c82333;
+  /* Darker red border */
+  padding: 5px 10px;
+  /* Reduced padding */
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
+  /* Add margin to create space between buttons */
+}
+
+.refuser-btn:hover {
+  background-color: #c82333;
+  /* Darker red on hover */
 }
 .details-text13 {
   font-size: 10px;
@@ -378,6 +407,7 @@
 @media(max-width: 767px) {
   .details-container {
     width: 90%;
+    min-width: 10px;
   }
   .details-left {
     width: 50%;
@@ -406,6 +436,7 @@
   }
   .details-text03 {
     text-align: center;
+    
   }
   .details-right {
     width: 100%;
@@ -418,8 +449,5 @@
     align-items: center;
     flex-direction: column;
   }
-  .details-button {
-    margin-top: var(--dl-space-space-unit);
-    margin-left: 0px;
-  }
+  
 }
