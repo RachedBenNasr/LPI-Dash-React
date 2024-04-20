@@ -279,13 +279,9 @@
 
 .vu-btn {
   background-color: #28a745;
-
   color: #fff;
-
-  border: 2px solid #218838;
-
+  border: 1px solid #218838;
   padding: 5px 10px;
-
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.3s ease;
@@ -294,30 +290,25 @@
 }
 
 .vu-btn:hover {
-  background-color: #218838;
-
+  background-color: #fff;
+  color: #28a745;
 }
 
 
 .supprimer-btn {
   background-color: #dc3545;
-
   color: #fff;
-
-  border: 2px solid #c82333;
-
+  border: 1px solid #c82333;
   padding: 5px 10px;
-
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.3s ease;
   margin-right: 10px;
-
 }
 
 .supprimer-btn:hover {
-  background-color: #c82333;
-  /* Darker red on hover */
+  color: #c82333;
+  background-color: #fff;
 }
 
 .details-table-container {
