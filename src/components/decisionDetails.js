@@ -55,7 +55,7 @@ const Details = (props) => {
 
   const handleApproveListing = (listingId) => {
     const database = getDatabase();
-    const listingRef = ref(database, `listings/sale/${listingId}`);
+    const listingRef = ref(database, `listings/${props.type}/${listingId}`);
 
     // Fetch the existing data
     get(listingRef)
@@ -79,7 +79,7 @@ const Details = (props) => {
 
   const handleRefuseListing = (listingId) => {
     const database = getDatabase();
-    const listingRef = ref(database, `listings/sale/${listingId}`);
+    const listingRef = ref(database, `listings/${props.type}/${listingId}`);
 
     // Fetch the existing data
     get(listingRef)
@@ -103,7 +103,7 @@ const Details = (props) => {
 
   const handleDeleteListing = (listingId) => {
     const database = getDatabase();
-    const listingRef = ref(database, `listings/sale/${listingId}`);
+    const listingRef = ref(database, `listings/${props.type}/${listingId}`);
     set(listingRef, null).catch((error) => {
       console.error("Error deleting listing:", error);
     });

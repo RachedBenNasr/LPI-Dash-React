@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import PropTypes from "prop-types";
-
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 
 import "./buying-listing.css";
@@ -20,6 +18,13 @@ const buyingListing = (props) => {
 
         // Get the first image URL
         if (listingImages.items.length > 0) {
+          const firstImageRef = listingImages.items[0];
+          const thumbnailURL = await getDownloadURL(firstImageRef);
+          setThumbnailURL(thumbnailURL);
+        } else {
+          const listingRef = ref(storage, `rent/${props.id}`);
+          // List all items in the folder
+          const listingImages = await listAll(listingRef);
           const firstImageRef = listingImages.items[0];
           const thumbnailURL = await getDownloadURL(firstImageRef);
           setThumbnailURL(thumbnailURL);
@@ -113,6 +118,5 @@ const buyingListing = (props) => {
     </div>
   );
 };
-
 
 export default buyingListing;
