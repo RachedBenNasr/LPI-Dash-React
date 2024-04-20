@@ -107,49 +107,12 @@ const buyingListing = (props) => {
               className=""
             ></path>
           </svg>
-          <span className="buying-listing-text8">{props.area} m²</span>
+          <span className="buying-listing-text8">{props.areaC} m²</span>
         </div>
       </div>
     </div>
   );
 };
 
-buyingListing.defaultProps = {
-  id: "0",
-  photos: "",
-  price: "",
-  baths: "",
-  header: "",
-  city: "",
-  location: "",
-  area: "",
-  body: "",
-  rootClassName: "",
-  beds: "",
-  cars: "",
-  pool: "",
-  garden: "",
-  nature: "",
-  interval: "",
-};
-
-buyingListing.propTypes = {
-  id: PropTypes.string,
-  photos: PropTypes.number,
-  price: PropTypes.string,
-  baths: PropTypes.string,
-  header: PropTypes.string,
-  city: PropTypes.string,
-  location: PropTypes.string,
-  area: PropTypes.string,
-  body: PropTypes.string,
-  rootClassName: PropTypes.string,
-  beds: PropTypes.string,
-  cars: PropTypes.string,
-  pool: PropTypes.bool,
-  garden: PropTypes.bool,
-  nature: PropTypes.string,
-  interval: PropTypes.string,
-};
 
 export default buyingListing;
