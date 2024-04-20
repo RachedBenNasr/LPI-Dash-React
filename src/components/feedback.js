@@ -173,6 +173,7 @@ const Feedback = () => {
   const [selectedListing, setSelectedListing] = useState(null);
 
   const handleListingClick = async (request) => {
+    console.log("hello");
     try {
       const database = getDatabase();
       const listingRef = ref(
