@@ -175,6 +175,7 @@ const Feedback = () => {
 
   const [detailsVisible, setDetailsVisible] = useState(false);
   const [selectedListing, setSelectedListing] = useState(null);
+  const [selectedRequestID, setSelectedRequestID] = useState(null);
 
   const handleListingClick = async (request) => {
     try {
@@ -190,6 +191,7 @@ const Feedback = () => {
         const listingData = snapshot.val();
         setSelectedListing(listingData);
         setDetailsVisible(true);
+        setSelectedRequestID(request.requestid);
       } else {
         console.log("Listing not found.");
         // Handle the case where the listing doesn't exist
@@ -203,6 +205,7 @@ const Feedback = () => {
   const handleCloseDetails = () => {
     setDetailsVisible(false);
     setSelectedListing(null);
+    setSelectedRequestID(null);
   };
 
   return (
@@ -426,6 +429,7 @@ const Feedback = () => {
           <div className="overlay" onClick={handleCloseDetails}></div>
 
           <Details
+            requestID={selectedRequestID}
             id={selectedListing.id}
             title={selectedListing.header}
             photos={selectedListing.photos}

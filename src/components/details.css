@@ -277,7 +277,7 @@
 }
 
 
-.accepter-btn {
+.vu-btn {
   background-color: #28a745;
 
   color: #fff;
@@ -293,13 +293,13 @@
 
 }
 
-.accepter-btn:hover {
+.vu-btn:hover {
   background-color: #218838;
 
 }
 
 
-.refuser-btn {
+.supprimer-btn {
   background-color: #dc3545;
 
   color: #fff;
@@ -315,7 +315,7 @@
 
 }
 
-.refuser-btn:hover {
+.supprimer-btn:hover {
   background-color: #c82333;
   /* Darker red on hover */
 }

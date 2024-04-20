@@ -191,16 +191,16 @@ const Details = (props) => {
 
               <div className="details-container8">
                 <button
-                  className="refuser-btn"
-                  onClick={props.deleteQuoteRequest(props.id)}
+                  className="supprimer-btn"
+                  onClick={() => props.deleteQuoteRequest(props.requestID)}
                 >
                   Supprimer
                 </button>
                 <button
-                  className="accepter-btn"
-                  onClick={props.markQuoteAsSeen(props.id)}
+                  className="vu-btn"
+                  onClick={() => props.markQuoteAsSeen(props.requestID)}
                 >
-                  Maruqer comme vu
+                  Marquer comme vu
                 </button>
               </div>
             </div>
@@ -209,43 +209,6 @@ const Details = (props) => {
       </div>
     </div>
   );
-};
-
-Details.propTypes = {
-  id: PropTypes.string,
-  areaC: PropTypes.string,
-  areaNC: PropTypes.string,
-  baths: PropTypes.string,
-  ownership: PropTypes.string,
-  title: PropTypes.string,
-  beds: PropTypes.string,
-  garage: PropTypes.bool,
-  description: PropTypes.string,
-  quote: PropTypes.string,
-  yearBuilt: PropTypes.string,
-  location: PropTypes.string,
-  price: PropTypes.string,
-  range: PropTypes.string,
-  body: PropTypes.string,
-  pool: PropTypes.bool,
-  garden: PropTypes.bool,
-  nature: PropTypes.string,
-  interval: PropTypes.string,
-  type: PropTypes.string,
-  city: PropTypes.string, // Added
-  commercialType: PropTypes.string, // Added
-  dateTime: PropTypes.number, // Added
-  email: PropTypes.string, // Added
-  phoneNumber: PropTypes.string, // Added
-  propertyTitle: PropTypes.bool, // Added
-  state: PropTypes.string, // Added
-  viabilise: PropTypes.bool, // Added
-
-  closeDetails: PropTypes.func,
-  markAsSeen: PropTypes.func,
-  markQuoteAsSeen: PropTypes.func,
-  deleteMessage: PropTypes.func,
-  deleteQuoteRequest: PropTypes.func,
 };
 
 export default Details;

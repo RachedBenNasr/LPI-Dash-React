@@ -140,7 +140,7 @@ const Data = () => {
           }`}
           onClick={() => handleMenuItemClick("feedback")}
         >
-          <span className="data-text6">Demandes de contact</span>
+          <span className="data-text6">Messages</span>
           {unseenRequests != 0 && (
             <>
               <svg viewBox="0 0 877.7142857142857 1024" className="data-icon6">
