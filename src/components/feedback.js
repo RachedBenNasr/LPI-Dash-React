@@ -9,6 +9,8 @@ const Feedback = () => {
   const [unseenQuoteRequests, setUnseenQuoteRequests] = useState([]);
   const [seenQuoteRequests, setSeenQuoteRequests] = useState([]);
 
+  const [trigger, setTrigger] = useState(false);
+
   useEffect(() => {
     const fetchContactRequests = async () => {
       const database = getDatabase();
@@ -113,6 +115,7 @@ const Feedback = () => {
         setUnseenRequests(unseenRequests);
         setSeenRequests(seenRequests);
       }
+      setTrigger(!trigger);
     } catch (error) {
       console.error("Error marking request as seen:", error);
     }
@@ -164,6 +167,7 @@ const Feedback = () => {
         setUnseenRequests(unseenRequests);
         setSeenRequests(seenRequests);
       }
+      setTrigger(!trigger);
     } catch (error) {
       console.error("Error deleting message:", error);
     }
@@ -173,7 +177,6 @@ const Feedback = () => {
   const [selectedListing, setSelectedListing] = useState(null);
 
   const handleListingClick = async (request) => {
-    console.log("hello");
     try {
       const database = getDatabase();
       const listingRef = ref(
@@ -233,7 +236,10 @@ const Feedback = () => {
                       </a>
                     </td>
 
-                    <td onClick={() => handleListingClick(request)}>
+                    <td
+                      onClick={() => handleListingClick(request)}
+                      className="Clickable"
+                    >
                       {request.header}
                     </td>
                     <td>
@@ -283,7 +289,10 @@ const Feedback = () => {
                         {request.email}
                       </a>
                     </td>
-                    <td onClick={() => handleListingClick(request)}>
+                    <td
+                      onClick={() => handleListingClick(request)}
+                      className="Clickable"
+                    >
                       {request.header}
                     </td>
                     <td>
@@ -414,7 +423,7 @@ const Feedback = () => {
       </div>
       {detailsVisible && (
         <>
-          <div className="details-overlay" onClick={handleCloseDetails}></div>
+          <div className="overlay" onClick={handleCloseDetails}></div>
 
           <Details
             id={selectedListing.id}
@@ -424,7 +433,8 @@ const Feedback = () => {
             baths={selectedListing.baths}
             header={selectedListing.header}
             location={selectedListing.location}
-            area={selectedListing.area}
+            areaNC={selectedListing.areaNC}
+            areaC={selectedListing.areaC}
             body={selectedListing.body}
             beds={selectedListing.beds}
             garage={selectedListing.garage}
@@ -433,7 +443,20 @@ const Feedback = () => {
             nature={selectedListing.nature}
             interval={selectedListing.interval}
             closeDetails={handleCloseDetails}
+            markAsSeen={markAsSeen}
+            markQuoteAsSeen={markQuoteAsSeen}
+            deleteMessage={deleteMessage}
+            deleteQuoteRequest={deleteQuoteRequest}
             type={selectedListing.type}
+            city={selectedListing.city} // Added
+            commercialType={selectedListing.commercialType} // Added
+            dateTime={selectedListing.dateTime} // Added
+            email={selectedListing.email} // Added
+            phoneNumber={selectedListing.phoneNumber} // Added
+            propertyTitle={selectedListing.propertyTitle} // Added
+            state={selectedListing.state} // Added
+            viabilise={selectedListing.viabilise} // Added
+            yearBuilt={selectedListing.yearBuilt}
           />
         </>
       )}
