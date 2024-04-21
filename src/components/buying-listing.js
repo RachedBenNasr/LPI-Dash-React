@@ -82,7 +82,11 @@ const buyingListing = (props) => {
       </div>
       <div className="buying-listing-container">
         <span className="buying-listing-text3">{props.header}</span>
+        <span className="buying-listing-text3">
+          <i>{props.commercialType} </i>
+        </span>
         <span className="buying-listing-text4">{props.price} TND</span>
+
         <span className="buying-listing-text5">{newBody}</span>
         <div className="buying-listing-container1">
           <svg

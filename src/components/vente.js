@@ -88,6 +88,7 @@ const Vente = (props) => {
                 garden={listing.garden}
                 nature={listing.nature}
                 interval={listing.interval}
+                commercialType={listing.commercialType}
               />
             </div>
           ))}
@@ -117,6 +118,7 @@ const Vente = (props) => {
                 garden={listing.garden}
                 nature={listing.nature}
                 interval={listing.interval}
+                commercialType={listing.commercialType}
               />
             </div>
           ))}
@@ -146,6 +148,7 @@ const Vente = (props) => {
                 garden={listing.garden}
                 nature={listing.nature}
                 interval={listing.interval}
+                commercialType={listing.commercialType}
               />
             </div>
           ))}
