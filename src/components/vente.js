@@ -80,6 +80,7 @@ const Vente = (props) => {
                 city={listing.city}
                 location={listing.location}
                 areaC={listing.areaC}
+                areaNC={listing.areaNC}
                 body={listing.body}
                 beds={listing.beds}
                 cars={listing.cars}
@@ -108,6 +109,7 @@ const Vente = (props) => {
                 city={listing.city}
                 location={listing.location}
                 areaC={listing.areaC}
+                areaNC={listing.areaNC}
                 body={listing.body}
                 beds={listing.beds}
                 cars={listing.cars}
@@ -136,6 +138,7 @@ const Vente = (props) => {
                 city={listing.city}
                 location={listing.location}
                 areaC={listing.areaC}
+                areaNC={listing.areaNC}
                 body={listing.body}
                 beds={listing.beds}
                 cars={listing.cars}
@@ -175,7 +178,8 @@ const Vente = (props) => {
             commercialType={selectedListing.commercialType} // Added
             dateTime={selectedListing.dateTime} // Added
             email={selectedListing.email} // Added
-            phoneNumber={selectedListing.phoneNumber} // Added
+            phoneNumber1={selectedListing.phoneNumber1} // Added
+            phoneNumber2={selectedListing.phoneNumber2} // Added
             propertyTitle={selectedListing.propertyTitle} // Added
             state={selectedListing.state} // Added
             viabilise={selectedListing.viabilise} // Added

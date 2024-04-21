@@ -142,11 +142,11 @@ const Details = (props) => {
                   <tbody>
                     <tr>
                       <td>Zone Construite</td>
-                      <td>{props.areaC}</td>
+                      <td>{props.areaC} m²</td>
                     </tr>
                     <tr>
                       <td>Zone Non Construite</td>
-                      <td>{props.areaNC}</td>
+                      <td>{props.areaNC} m²</td>
                     </tr>
                     <tr>
                       <td>Ville</td>
@@ -173,8 +173,16 @@ const Details = (props) => {
                     <tr>
                       <td>Numéro de Téléphone</td>
                       <td>
-                        <a href={`tel:${props.phoneNumber}`}>
-                          {props.phoneNumber}
+                        <a href={`tel:${props.phoneNumber1}`}>
+                          {props.phoneNumber1}
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Numéro de Téléphone 2</td>
+                      <td>
+                        <a href={`tel:${props.phoneNumber2}`}>
+                          {props.phoneNumber2}
                         </a>
                       </td>
                     </tr>

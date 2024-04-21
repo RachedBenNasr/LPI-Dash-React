@@ -112,7 +112,9 @@ const buyingListing = (props) => {
               className=""
             ></path>
           </svg>
-          <span className="buying-listing-text8">{props.areaC} m²</span>
+          <span className="buying-listing-text8">
+            {Number(props.areaNC) + Number(props.areaC)} m²
+          </span>
         </div>
       </div>
     </div>
