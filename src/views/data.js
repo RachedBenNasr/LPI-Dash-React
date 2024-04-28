@@ -214,9 +214,7 @@ const Data = () => {
           <span className="data-text3 not-selected">Vente</span>
           {totalSaleRequests != 0 && (
             <>
-              <svg viewBox="0 0 877.7142857142857 1024" className="data-icon">
-                <path d="M877.714 512c0 242.286-196.571 438.857-438.857 438.857s-438.857-196.571-438.857-438.857 196.571-438.857 438.857-438.857 438.857 196.571 438.857 438.857z"></path>
-              </svg>
+              <div class="badge">{totalSaleRequests}</div>
             </>
           )}
         </div>
@@ -229,9 +227,7 @@ const Data = () => {
           <span className="not-selected">Loyer</span>
           {totalRentRequests != 0 && (
             <>
-              <svg viewBox="0 0 877.7142857142857 1024" className="data-icon">
-                <path d="M877.714 512c0 242.286-196.571 438.857-438.857 438.857s-438.857-196.571-438.857-438.857 196.571-438.857 438.857-438.857 438.857 196.571 438.857 438.857z"></path>
-              </svg>
+              <div class="badge">{totalRentRequests}</div>
             </>
           )}
         </div>
@@ -244,9 +240,7 @@ const Data = () => {
           <span className="data-text5 not-selected">Commercial</span>
           {totalCommRequests != 0 && (
             <>
-              <svg viewBox="0 0 877.7142857142857 1024" className="data-icon">
-                <path d="M877.714 512c0 242.286-196.571 438.857-438.857 438.857s-438.857-196.571-438.857-438.857 196.571-438.857 438.857-438.857 438.857 196.571 438.857 438.857z"></path>
-              </svg>
+              <div class="badge">{totalCommRequests}</div>
             </>
           )}
         </div>
@@ -259,9 +253,7 @@ const Data = () => {
           <span className="data-text6">Messages</span>
           {unseenRequests != 0 && (
             <>
-              <svg viewBox="0 0 877.7142857142857 1024" className="data-icon6">
-                <path d="M877.714 512c0 242.286-196.571 438.857-438.857 438.857s-438.857-196.571-438.857-438.857 196.571-438.857 438.857-438.857 438.857 196.571 438.857 438.857z"></path>
-              </svg>
+              <div class="badge">{unseenRequests}</div>
             </>
           )}
         </div>
