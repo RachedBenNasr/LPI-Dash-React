@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import PropTypes from "prop-types";
-
 import { IoClose } from "react-icons/io5";
 import { FaBath, FaBed, FaChartArea } from "react-icons/fa";
 import { FaMapLocationDot } from "react-icons/fa6";

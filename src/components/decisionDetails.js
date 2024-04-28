@@ -14,6 +14,7 @@ import {
   ref as Sref,
   listAll,
   getDownloadURL,
+  deleteObject,
 } from "firebase/storage";
 
 import ImageGallery from "react-image-gallery";
@@ -101,14 +102,37 @@ const Details = (props) => {
       });
   };
 
-  const handleDeleteListing = (listingId) => {
+  const handleDeleteListing = async (listingId, type) => {
     const database = getDatabase();
-    const listingRef = ref(database, `listings/${props.type}/${listingId}`);
-    set(listingRef, null).catch((error) => {
-      console.error("Error deleting listing:", error);
-    });
+    const storage = getStorage();
+
+    const listingRef = ref(database, `listings/${type}/${listingId}`);
+
+    const imagesRef = Sref(storage, `${type}/${listingId}`);
+
+    await set(listingRef, null);
+
+    listAll(imagesRef)
+      .then((res) => {
+        // Delete each item in the folder
+        const deletePromises = res.items.map((itemRef) => {
+          return deleteObject(itemRef);
+        });
+
+        // Wait for all delete operations to complete
+        Promise.all(deletePromises)
+          .then(() => {
+            alert("Annonce supprimé avec succès.");
+          })
+          .catch((error) => {
+            console.error("Error deleting images:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error listing images:", error);
+      });
+
     props.closeDetails();
-    alert("supprimé!");
   };
 
   return (
@@ -266,7 +290,9 @@ const Details = (props) => {
                 </button>
                 <button
                   className="delete-btn"
-                  onClick={() => handleDeleteListing(props.listingId)}
+                  onClick={() =>
+                    handleDeleteListing(props.listingId, props.type)
+                  }
                 >
                   Supprimer
                 </button>
